@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!--NewPage-->
+<html>
+ <head> 
+  <title>Reading from and Writing to a URLConnection</title> 
+ </head> 
+ <body> 
+  <table width="100%"> 
+   <tbody>
+    <tr> 
+     <td align="left"> <a href="readingWriting.html"><img src="../../images/PreviousArrow.gif" width="26" height="26" align="bottom" border="0" alt="Previous | "></a><a href="../sockets/index.html"><img src="../../images/NextArrow.gif" width="26" height="26" align="bottom" border="0" alt="Next | "></a><a href="../../index.html"><img src="../../images/WayUpArrow.gif" width="26" height="26" align="bottom" border="0" alt="Trail Map | "></a><a href="../index.html"><img src="../../images/networkingHeader.gif" width="26" height="26" align="bottom" border="0" alt="Custom Networking and Security | "></a> </td> 
+     <td align="right"> <a href="index.html"><strong><em>Working with URLs</em></strong></a> </td> 
+    </tr> 
+   </tbody>
+  </table> 
+  <p> </p>
+  <hr size="4"> 
+  <h2> Reading from and Writing to a URLConnection <a name="ONE_ONE_NOTE"><font size="-1"><em>(</em></font></a><font size="-1"><em><a href="_1_1notes.html#readingWriting.html"><img src="../../images/jdk1_1.gif" height="20" width="20" alt="1.1" border="0" align="middle"></a><a href="_1_1notes.html#readingWriting.html">notes</a>)</em></font> </h2> 
+  <p> </p>
+  <blockquote>
+    If you've successfully used 
+   <code>openConnection()</code> to initiate communications with a URL, then you have a reference to a URLConnection object. The URLConnection class contains many methods that let you communicate with the URL over the network. URLConnection is an HTTP-centric class--many of its methods are useful only when working with HTTP URLs. However, most URL protocols let you read from and write to the connection so this page shows you how to both read from and write to a URL through a URLConnection object. 
+   <h4>Reading from a URLConnection<a name="ConnectionTest"><font size="-1"><em>(</em></font></a><font size="-1"><em><a href="_1_1notes.html#"><img src="../../images/jdk1_1.gif" height="20" width="20" alt="1.1" border="0" align="middle"></a><a href="_1_1notes.html#">notes</a>)</em></font></h4> 
+   <blockquote>
+     The following program performs the same function as the program shown in 
+    <a href="readingURL.html">Reading Directly from a URL</a>. However, rather than opening a stream directly from the URL, this program explicitly opens a connection to the URL, gets an input stream on the connection, and reads from the input stream: 
+    <blockquote> 
+     <pre>
+import java.net.*;
+import java.io.*;
+
+class ConnectionTest {
+    public static void main(String[] args) {
+        try {
+            URL yahoo = new URL("http://www.yahoo.com/");
+            URLConnection yahooConnection = yahoo.openConnection();
+            DataInputStream dis = new DataInputStream(yahooConnection.getInputStream());
+            String inputLine;
+
+            while ((inputLine = dis.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            dis.close();
+        } catch (MalformedURLException me) {
+            System.out.println("MalformedURLException: " + me);
+        } catch (IOException ioe) {
+            System.out.println("IOException: " + ioe);
+        }
+    }
+}
+</pre> 
+    </blockquote> The output from this program should be identical to the output from the program that opens a stream directly from the URL. You can use either way to read from a URL. However, sometimes reading from a URLConnection instead of reading directly from a URL might be more useful to you as you can use the URLConnection object for other tasks (like writing to the URL) at the same time. 
+    <p> Again if, instead of output from the program, you see the following error message: </p>
+    <blockquote> 
+     <pre>
+IOException: java.net.UnknownHostException: www.yahoo.com
+</pre> 
+    </blockquote> you may have to set the proxy host so that the program can find the www.yahoo.com server. 
+   </blockquote> 
+   <h4>Writing to a URLConnection<a name="ReverseTest"><font size="-1"><em>(</em></font></a><font size="-1"><em><a href="_1_1notes.html#"><img src="../../images/jdk1_1.gif" height="20" width="20" alt="1.1" border="0" align="middle"></a><a href="_1_1notes.html#">notes</a>)</em></font></h4> 
+   <blockquote>
+     Many HTML pages contain 
+    <em>forms</em>--text fields and other GUI objects that let you enter data to the server. After you type in the required information and initiate the query by clicking on a button, the Web browser you're using writes the data to the URL over the network. At the other end, a (usually) cgi-bin script on the server the data, processes it, and then sends you back a response, usually in the shape of a new HTML page. This scenario is often used to support searching. 
+    <p> Many cgi-bin scripts use the POST METHOD for reading the data from the client. Thus writing to a URL is often known as <em>posting to a URL</em>. Server-side scripts that use the POST METHOD read from their standard input. </p>
+    <p> </p>
+    <hr> 
+    <strong>Note:</strong> Some server-side cgi-bin scripts use the GET METHOD to read your data. The POST METHOD is quickly making the GET METHOD obsolete because it's more versatile and has no limitations on the amount of data that can be sent through the connection. 
+    <hr> 
+    <p> Your Java programs can also interact with cgi-bin scripts on the server-side. They simply must be able to write to a URL, thus providing data to the server. Your program can do this by following these steps: </p>
+    <ol> 
+     <li> Create a URL. </li>
+     <li> Open a connection to the URL. </li>
+     <li> Get an output stream from the connection. This output stream is connected to the standard input stream of the cgi-bin script on the server. </li>
+     <li> Write to the output stream. </li>
+     <li> Close the output stream. </li>
+    </ol> Hassan Schroeder, a member of the Java team, wrote a small cgi-bin script, named 
+    <a href="example/backwards"><code>backwards</code></a>, and made it available at our Web site, 
+    <code>java.sun.com</code>. You can use this script to test the following example program. If for some reason you can't get to our Web site; you can put the script somewhere on your network, name it 
+    <code>backwards</code>, and test the program locally. 
+    <p> The script at our Web site reads a string from its standard input, reverses the string, and writes the result to its standard output. The script requires input of the following form: <code>string=<em>string_to_reverse</em></code>, where <code><em>string_to_reverse</em></code> is the string whose characters you want displayed in reverse order. </p>
+    <p> Here's an example program that runs the <code>backwards</code> script over the network through a URLConnection: </p>
+    <blockquote> 
+     <pre>
+import java.io.*;
+import java.net.*;
+
+public class ReverseTest {
+    public static void main(String[] args) {
+        try {
+            if (args.length != 1) {
+                System.err.println("Usage:  java ReverseTest string_to_reverse");
+                System.exit(1);
+            }
+            String stringToReverse = URLEncoder.encode(args[0]);
+
+            URL url = new URL("http://java.sun.com/cgi-bin/backwards");
+            URLConnection connection = url.openConnection();
+
+            PrintStream outStream = new PrintStream(connection.getOutputStream());
+            outStream.println("string=" + stringToReverse);
+            outStream.close();
+
+            DataInputStream inStream = new DataInputStream(connection.getInputStream());
+            String inputLine;
+
+            while ((inputLine = inStream.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            inStream.close();
+        } catch (MalformedURLException me) {
+            System.err.println("MalformedURLException: " + me);
+        } catch (IOException ioe) {
+            System.err.println("IOException: " + ioe);
+        }
+    }
+}
+</pre> 
+    </blockquote> Let's examine the program and see how it works. First, the program processes its command line arguments: 
+    <blockquote> 
+     <pre>
+if (args.length != 1) {
+    System.err.println("Usage:  java ReverseTest string_to_reverse");
+    System.exit(1);
+}
+String stringToReverse = URLEncoder.encode(args[0]);
+</pre> 
+    </blockquote> These lines ensure that the user provides one and only one command line argument to the program and encodes it. The command line argument is the string to be reversed by the cgi-bin script 
+    <code>backwards</code>. The command line argument may have spaces or other non-alphanumeric characters in it. Those characters must be encoded because various processing may happen on the string on its way to the server. This is achieved by the URLEncoder class. 
+    <p> Next the program creates the URL object--the URL for the <code>backwards</code> script on java.sun.com. </p>
+    <blockquote> 
+     <pre>
+URL url = new URL("http://java.sun.com/cgi-bin/backwards");
+</pre> 
+    </blockquote> Next, the program creates a URLConnection and then opens an output stream on that connection. The output stream is filtered through a PrintStream. 
+    <blockquote> 
+     <pre>
+URLConnection connection = url.openConnection();
+PrintStream outStream = new PrintStream(connection.getOutputStream());
+</pre> 
+    </blockquote> The second line above calls the 
+    <code>getOutputStream()</code> method on the connection. If the URL does not support output, this method throws an UnknownServiceException. If the URL supports output, then this method returns an output stream that is connected to the standard input stream of the URL on the server side--the client's output is the server's input. 
+    <p> Next, the program writes the required information to the output stream and closes the stream: </p>
+    <blockquote> 
+     <pre>
+outStream.println("string=" + stringToReverse);
+outStream.close();
+</pre> 
+    </blockquote> This line writes to the output stream using the 
+    <code>println()</code> method. So you can see, writing data to a URL is as easy as writing data to a stream. The data written to the output stream on the client-side is the input for the 
+    <code>backwards</code> script on the server-side. The ReverseTest program constructs the input in the form required by the script by concatenating 
+    <code>string=</code> to the encoded string to be reversed. 
+    <p> Often, as with this example, when you are writing to a URL you are passing information to a cgi-bin script which reads the information you write, performs some action and then sends information back to you via the same URL. So it's likely that you will want to read from the URL after you've written to it. The ReverseTest program does that next: </p>
+    <blockquote> 
+     <pre>
+DataInputStream inStream = new DataInputStream(connection.getInputStream());
+String inputLine;
+
+while (null != (inputLine = inStream.readLine())) {
+    System.out.println(inputLine);
+}
+inStream.close();
+</pre> 
+    </blockquote> When you run the ReverseTest program using 
+    <code>Reverse Me</code> as an argument, you should see this output: 
+    <blockquote> 
+     <pre>
+Reverse Me
+ reversed is: 
+eM esreveR
+</pre> 
+    </blockquote> 
+   </blockquote> 
+  </blockquote> 
+  <p> </p>
+  <hr size="4"> 
+  <p> </p>
+  <table width="100%"> 
+   <tbody>
+    <tr> 
+     <td align="left"> <a href="readingWriting.html"><img src="../../images/PreviousArrow.gif" width="26" height="26" align="top" border="0" alt="Previous | "></a><a href="../sockets/index.html"><img src="../../images/NextArrow.gif" width="26" height="26" align="top" border="0" alt="Next | "></a><a href="../../index.html"><img src="../../images/WayUpArrow.gif" width="26" height="26" align="top" border="0" alt="Trail Map | "></a><a href="../index.html"><img src="../../images/networkingHeader.gif" width="26" height="26" align="top" border="0" alt="Custom Networking and Security | "></a> </td> 
+     <td align="right"> <a href="index.html"><strong><em>Working with URLs</em></strong></a> </td> 
+    </tr> 
+   </tbody>
+  </table>   
+ </body>
+</html>
