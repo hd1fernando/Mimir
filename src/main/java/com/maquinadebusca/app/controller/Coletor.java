@@ -5,6 +5,8 @@
  */
 package com.maquinadebusca.app.controller;
 
+import com.maquinadebusca.app.Message.Message;
+import com.maquinadebusca.app.model.Link;
 import com.maquinadebusca.app.service.ColetorService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,7 +74,7 @@ public class Coletor {
         if (link != null && link.getId() > 0) {
             return new ResponseEntity(link, HttpStatus.OK);
         }
-        return new ResponseEntity(new Menssagem("Não foi possível inserir o link informado no Banco de Dados"));
+        return new ResponseEntity(new Message("Não foi possível inserir o link informado no Banco de Dados"));
     }
 
 }
