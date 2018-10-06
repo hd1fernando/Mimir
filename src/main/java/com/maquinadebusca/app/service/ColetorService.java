@@ -128,6 +128,18 @@ public class ColetorService {
         return documento;
     }
 
+    public Link SalvarLink(Link link) {
+        Link l = null;
+        try {
+            l = lr.save(link);
+
+        } catch (Exception e) {
+            System.err.println("\n>> Não foi possível salvar o link informado no Banco de Dados\n");
+            e.printStackTrace();
+        }
+        return l;
+    }
+
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public List<Host> getHost() {
         Iterable<Host> hosts = hr.findAll();

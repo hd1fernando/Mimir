@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/coletor") // URL: http://localhost:8080/coletor
@@ -62,6 +63,16 @@ public class Coletor {
     @GetMapping(value = "/link/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarLink(@PathVariable(value = "id") long id) {
         return new ResponseEntity(cs.getLink(id), HttpStatus.OK);
+    }
+
+    //Requst for: http://localhost:8080/coletor/link
+    @GetMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity inserirLink(@RequestBody Link link) {
+        link = cs.SalvarLink(link);
+        if (link != null && link.getId() > 0) {
+            return new ResponseEntity(link, HttpStatus.OK);
+        }
+        return new ResponseEntity(new Menssagem("Não foi possível inserir o link informado no Banco de Dados"));
     }
 
 }
