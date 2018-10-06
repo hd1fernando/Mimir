@@ -5,5 +5,6 @@ com/maquinadebusca/app/model/Host.class
 com/maquinadebusca/app/repository/IHostRepository.class
 com/maquinadebusca/app/service/ColetorService.class
 com/maquinadebusca/app/Message/Message.class
+com/maquinadebusca/app/controller/Coletor.class
 com/maquinadebusca/app/model/Link.class
 com/maquinadebusca/app/repository/IDocumentoRepository.class

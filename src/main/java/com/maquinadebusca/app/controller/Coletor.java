@@ -74,7 +74,7 @@ public class Coletor {
         if (link != null && link.getId() > 0) {
             return new ResponseEntity(link, HttpStatus.OK);
         }
-        return new ResponseEntity(new Message("Não foi possível inserir o link informado no Banco de Dados"));
+        return new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no Banco de Dados"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
