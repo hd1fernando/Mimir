@@ -51,20 +51,18 @@ public class ColetorService {
 
     public List<Documento> executar() {
         List<Documento> documentos = new LinkedList();
+        List<String> sementes = new LinkedList();
 
         try {
+            sementes.add("https://www.youtube.com/");
+            sementes.add("https://www.facebook.com/");
+            sementes.add("https://www.twitter.com/");
 
-            int cont = 0;
-            int condicaoParada = 5;
-            String url = urlSemente;
-
-            while (cont < condicaoParada) {
-                documentos.add(this.coletar(url.trim()));
-                url = this.getLinkByPosition(cont);
-                cont++;
+            for (String url : sementes) {
+                documentos.add(this.coletar(url));
             }
         } catch (Exception e) {
-            System.out.println("Erro ao executar o serviço de coleta!");
+            System.err.println("\n\n\n Erro ao executar o serviço de coleta! \n\n\n");
             e.printStackTrace();
         }
         return documentos;
@@ -115,8 +113,6 @@ public class ColetorService {
                 documento.addHost(host);
             }
 
-//            System.out.println("Número de links coletados: " + host.getContador());
-//            System.out.println("Tamanho da lista links: " + documento.getLinks().size());
             documento = dr.save(documento);
 
         } catch (Exception e) {
@@ -128,11 +124,10 @@ public class ColetorService {
         return documento;
     }
 
-    public Link SalvarLink(Link link) {
+    public Link salvarLink(Link link) {
         Link l = null;
         try {
             l = lr.save(link);
-
         } catch (Exception e) {
             System.err.println("\n>> Não foi possível salvar o link informado no Banco de Dados\n");
             e.printStackTrace();

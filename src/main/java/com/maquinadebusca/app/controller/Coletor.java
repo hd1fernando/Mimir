@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -67,14 +68,14 @@ public class Coletor {
         return new ResponseEntity(cs.getLink(id), HttpStatus.OK);
     }
 
-    //Requst for: http://localhost:8080/coletor/link
-    @GetMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    // Request for: http://localhost:8080/coletor/link
+    @PostMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity inserirLink(@RequestBody Link link) {
-        link = cs.SalvarLink(link);
-        if (link != null && link.getId() > 0) {
+        link = cs.salvarLink(link);
+        if ((link != null) && (link.getId() > 0)) {
             return new ResponseEntity(link, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new Message("erro", "não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no Banco de Dados"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }
