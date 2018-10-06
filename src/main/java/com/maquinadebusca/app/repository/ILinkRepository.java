@@ -21,4 +21,7 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
     List<Link> findAll();
 
     Link findById(long id);
+
+    @Override
+    Link save(Link link);
 }
