@@ -71,6 +71,7 @@ public class Coletor {
     // Request for: http://localhost:8080/coletor/link
     @PostMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity inserirLink(@RequestBody Link link) {
+        
         link = cs.salvarLink(link);
         if ((link != null) && (link.getId() > 0)) {
             return new ResponseEntity(link, HttpStatus.OK);
