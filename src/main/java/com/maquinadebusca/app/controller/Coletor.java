@@ -7,7 +7,10 @@ package com.maquinadebusca.app.controller;
 
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.model.Link;
+import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
+import java.util.LinkedList;
+import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,13 +73,16 @@ public class Coletor {
 
     // Request for: http://localhost:8080/coletor/link
     @PostMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity inserirLink(@RequestBody Link link) {
+    public Sementes inserirLink(@RequestBody Sementes urls) {
         
-        link = cs.salvarLink(link);
-        if ((link != null) && (link.getId() > 0)) {
-            return new ResponseEntity(link, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(new Message("erro", "não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Sementes result  = null;
+
+//        link = cs.salvarLink(link);
+//        if ((link != null) && (link.getId() > 0)) {
+//            result.add(new ResponseEntity(link, HttpStatus.OK));
+//        } else {
+//            result.add(new ResponseEntity(new Message("erro", "não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR));
+//        }
+        return result;
     }
 }
