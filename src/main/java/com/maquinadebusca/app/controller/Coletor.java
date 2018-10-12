@@ -11,6 +11,8 @@ import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
+import javax.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,18 +74,21 @@ public class Coletor {
         return new ResponseEntity(cs.getLink(id), HttpStatus.OK);
     }
 
-    // Request for: http://localhost:8080/coletor/link
+    // Request for: http://localhost:8080/coletor/link  
     @PostMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Sementes inserirLink(@RequestBody Sementes urls) {
-        
-        Sementes result  = null;
-
-//        link = cs.salvarLink(link);
-//        if ((link != null) && (link.getId() > 0)) {
-//            result.add(new ResponseEntity(link, HttpStatus.OK));
-//        } else {
-//            result.add(new ResponseEntity(new Message("erro", "não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR));
-//        }
-        return result;
+    public ResponseEntity inserirLink(@RequestBody @Valid Link url, BindingResult resultado) {
+        ResponseEntity resposta = null;
+        if (resultado.hasErrors()) {
+            
+            resposta = new ResponseEntity(new Message("erro", "os dados sobre o link  não foram informados corretamente"), HttpStatus.BAD_REQUEST);
+        } else {
+            url = cs.salvarLink(url);
+            if ((url != null) && (url.getId() > 0)) {
+                resposta = new ResponseEntity(url, HttpStatus.OK);
+            } else {
+                resposta = new ResponseEntity(new Message("erro", "não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return resposta;
     }
 }
