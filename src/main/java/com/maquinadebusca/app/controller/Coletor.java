@@ -6,10 +6,13 @@
 package com.maquinadebusca.app.controller;
 
 import com.maquinadebusca.app.Message.Message;
+import com.maquinadebusca.app.model.Documento;
 import com.maquinadebusca.app.model.Link;
+import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
 import com.mysql.fabric.Response;
 import java.net.Proxy;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +38,11 @@ public class Coletor {
     // URL: http://localhost:8080/coletor/iniciar
     @GetMapping(value = "/iniciar", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity inicar() {
-        return new ResponseEntity(cs.executar(), HttpStatus.OK);
+        List<Documento> documento = cs.executar();
+        if (documento != null) {
+            return new ResponseEntity(documento, HttpStatus.OK);
+        }
+        return new ResponseEntity(new Message("erro", "Não foi possível inciaar a coleta"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // URL: http://localhost:8080/coletor/host
@@ -47,7 +54,11 @@ public class Coletor {
     // Request for: http://localhost:8080/coletor/host/{id}
     @GetMapping(value = "/host/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarHost(@PathVariable(value = "id") long id) {
+        if (id <= 0) {
+            return new ResponseEntity(new Message("erro", "os dados sobre o link não foram informado corretamente"), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(cs.getHost(id), HttpStatus.OK);
+
     }
 
     // URL: http://localhost:8080/coletor/documento
@@ -79,10 +90,10 @@ public class Coletor {
 //    @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
 //    public List<ResponseEntity> inserirLink(@RequestBody Sementes urls) {
 //        List<String> u = urls.getUrls();
-//        Link link;
+//        Link link = null;
 //        List<ResponseEntity> result = null;
 //        for (String lk : u) {
-//            link = cs.salvarLink(lk);
+//            //    link = cs.salvarLink(lk);
 //            if (link != null && link.getId() > 0) {
 //                result.add(new ResponseEntity(link, HttpStatus.OK));
 //            } else {
