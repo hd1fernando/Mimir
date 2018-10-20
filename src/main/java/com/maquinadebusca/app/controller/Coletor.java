@@ -8,10 +8,7 @@ package com.maquinadebusca.app.controller;
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.model.Documento;
 import com.maquinadebusca.app.model.Link;
-import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
-import com.mysql.fabric.Response;
-import java.net.Proxy;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.http.MediaType;
@@ -48,6 +45,7 @@ public class Coletor {
     // URL: http://localhost:8080/coletor/host
     @GetMapping(value = "/host", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarHost() {
+        
         return new ResponseEntity(cs.getHost(), HttpStatus.OK);
     }
 
@@ -182,5 +180,6 @@ public class Coletor {
     public ResponseEntity encontarLink(@PathVariable(value = "url") String url) {
         return new ResponseEntity(cs.encontrarLinkUrl(url), HttpStatus.OK);
     }
-
+    
+   
 }
