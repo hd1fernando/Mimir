@@ -7,11 +7,9 @@ package com.maquinadebusca.app.controller;
 
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.model.Link;
-import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import com.mysql.fabric.Response;
+import java.net.Proxy;
 import javax.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -74,21 +74,102 @@ public class Coletor {
         return new ResponseEntity(cs.getLink(id), HttpStatus.OK);
     }
 
+    //lista 6  recebe várias urls mas é incapaz de trata-las devido ao tipo em lk
     // Request for: http://localhost:8080/coletor/link  
-    @PostMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity inserirLink(@RequestBody @Valid Link url, BindingResult resultado) {
+//    @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+//    public List<ResponseEntity> inserirLink(@RequestBody Sementes urls) {
+//        List<String> u = urls.getUrls();
+//        Link link;
+//        List<ResponseEntity> result = null;
+//        for (String lk : u) {
+//            link = cs.salvarLink(lk);
+//            if (link != null && link.getId() > 0) {
+//                result.add(new ResponseEntity(link, HttpStatus.OK));
+//            } else {
+//                result.add(new ResponseEntity(link, HttpStatus.BAD_REQUEST));
+//            }
+//
+//        }
+//
+//        return result;
+//    }
+    //lista 7
+    // Request for: http://localhost:8080/coletor/link  
+    @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public ResponseEntity inserirLink(@RequestBody @Valid Link link, BindingResult resultado) {
         ResponseEntity resposta = null;
         if (resultado.hasErrors()) {
-            
-            resposta = new ResponseEntity(new Message("erro", "os dados sobre o link  não foram informados corretamente"), HttpStatus.BAD_REQUEST);
+            resposta = new ResponseEntity(new Message("erro", "Os dados sobre o link não foram informados corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
-            url = cs.salvarLink(url);
-            if ((url != null) && (url.getId() > 0)) {
-                resposta = new ResponseEntity(url, HttpStatus.OK);
+            link = cs.salvarLink(link);
+            if (link != null && link.getId() > 0) {
+                resposta = new ResponseEntity(link, HttpStatus.OK);
             } else {
-                resposta = new ResponseEntity(new Message("erro", "não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
+                resposta = new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         return resposta;
     }
+
+    //lista 8
+    // Request for: http://localhost:8080/coletor/link  
+    @PutMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public ResponseEntity atualizarLink(@RequestBody @Valid Link link, BindingResult resultado) {
+        ResponseEntity resposta = null;
+        if (resultado.hasErrors()) {
+            resposta = new ResponseEntity(new Message("erro", "Os dados sobre o link não foram informados corretamente"), HttpStatus.BAD_REQUEST);
+        } else {
+            link = cs.salvarLink(link);
+            if (link != null && link.getId() > 0) {
+                resposta = new ResponseEntity(link, HttpStatus.OK);
+            } else {
+                resposta = new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no banco de dados"), HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        return resposta;
+    }
+
+    //lista 9
+    // Request for: http://localhost:8080/coletor/link  
+    @DeleteMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public ResponseEntity removerLink(@RequestBody @Valid Link link, BindingResult resultado) {
+        ResponseEntity resposta = null;
+        if (resultado.hasErrors()) {
+            resposta = new ResponseEntity(new Message("erro", "Os dados sobre o link não foram informados corretamente"), HttpStatus.BAD_REQUEST);
+        } else {
+            link = cs.salvarLink(link);
+            if (link != null && link.getId() > 0) {
+                resposta = new ResponseEntity(new Message("sucesso", "link removido com sucesso"), HttpStatus.OK);
+            } else {
+                resposta = new ResponseEntity(new Message("erro", "Não foi possível remover o link informado no banco de dados"), HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        return resposta;
+    }
+
+    //remoção atraves do identificado ID
+    // Request for: http://localhost:8080/coletor/link/{id} 
+    @DeleteMapping(value = "/link/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity removerLink(@PathVariable(value = "id") Long id) {
+        ResponseEntity resposta = null;
+        if (id != null && id <= 0) {
+            resposta = new ResponseEntity(new Message("erro", "os dados sobre o link não foram informado corretamente"), HttpStatus.BAD_REQUEST);
+        } else {
+            boolean respo = cs.removerLink(id);
+            if (respo) {
+                resposta = new ResponseEntity(new Message("sucesso", "link removido com sucesso"), HttpStatus.OK);
+            } else {
+                resposta = new ResponseEntity(new Message("erro", "não foi possível remover o link informado do banco de dados"), HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        return resposta;
+    }
+
+    //lista 10
+    // Request for: http://localhost:8080/coletor/encontar/{id}
+    @GetMapping(value = "/encontar/{url}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity encontarLink(@PathVariable(value = "url") String url) {
+        return new ResponseEntity(cs.encontrarLinkUrl(url), HttpStatus.OK);
+    }
+
 }

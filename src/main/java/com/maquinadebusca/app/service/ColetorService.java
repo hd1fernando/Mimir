@@ -139,6 +139,21 @@ public class ColetorService {
         return l;
     }
 
+    public Boolean removerLink(long id) {
+        try {
+            lr.deleteById(id);
+            return true;
+        } catch (Exception ex) {
+            System.err.println("\n>> Não foi possível deletar o link informado no Banco de Dados\n");
+            ex.printStackTrace();
+        }
+        return false;
+    }
+    
+    public List<Link> encontrarLinkUrl(String url){
+        return lr.findByUrlIgnoreCaseContaining(url);
+    }
+
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public List<Host> getHost() {
         Iterable<Host> hosts = hr.findAll();

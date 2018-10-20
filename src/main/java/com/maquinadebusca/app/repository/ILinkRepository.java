@@ -24,4 +24,9 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
 
     @Override
     Link save(Link link);
+
+    @Override
+    void deleteById(Long id);
+    
+    List<Link> findByUrlIgnoreCaseContaining(String url);
 }
