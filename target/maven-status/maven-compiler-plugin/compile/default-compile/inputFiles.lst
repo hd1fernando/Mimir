@@ -6,6 +6,7 @@
 /home/fernando/Programas/Java/Mimir/src/main/java/com/maquinadebusca/app/repository/ILinkRepository.java
 /home/fernando/Programas/Java/Mimir/src/main/java/com/maquinadebusca/app/service/UsuarioService.java
 /home/fernando/Programas/Java/Mimir/src/main/java/com/maquinadebusca/app/repository/IUsuarioRepository.java
+/home/fernando/Programas/Java/Mimir/src/main/java/com/maquinadebusca/app/controller/UsuarioAPI.java
 /home/fernando/Programas/Java/Mimir/src/main/java/com/maquinadebusca/app/AppApplication.java
 /home/fernando/Programas/Java/Mimir/src/main/java/com/maquinadebusca/app/repository/IHostRepository.java
 /home/fernando/Programas/Java/Mimir/src/main/java/com/maquinadebusca/app/usuario/Usuario.java
