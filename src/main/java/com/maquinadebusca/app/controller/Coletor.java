@@ -7,6 +7,7 @@ package com.maquinadebusca.app.controller;
 
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.model.Documento;
+import com.maquinadebusca.app.model.Host;
 import com.maquinadebusca.app.model.Link;
 import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
@@ -47,8 +48,11 @@ public class Coletor {
     // URL: http://localhost:8080/coletor/host
     @GetMapping(value = "/host", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarHost() {
-
-        return new ResponseEntity(cs.getHost(), HttpStatus.OK);
+        List<Host> host = cs.getHost();
+        if (host != null) {
+            return new ResponseEntity(host, HttpStatus.OK);
+        }
+        return new ResponseEntity(new Message("erro", "Não foi possível iniciar a coleta"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // Request for: http://localhost:8080/coletor/host/{id}
@@ -92,12 +96,12 @@ public class Coletor {
         List<String> u = urls.getUrls();
         Link link = null;
         List<ResponseEntity> result = new LinkedList();
-        
+
         for (String lk : u) {
             link = new Link();
             link.setUrl(lk);
             link = cs.salvarLink(link);
-            
+
             if (link != null && link.getId() > 0) {
                 result.add(new ResponseEntity(link, HttpStatus.OK));
             } else {
@@ -127,7 +131,6 @@ public class Coletor {
 //        }
 //        return resposta;
 //    }
-
     //lista 8
     // Request for: http://localhost:8080/coletor/link  
     @PutMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)

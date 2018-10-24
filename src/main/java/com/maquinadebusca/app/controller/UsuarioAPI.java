@@ -26,7 +26,7 @@ public class UsuarioAPI {
     @PostMapping(value = "/cadastrar", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity cadastrarUsuario(@RequestBody @Valid Usuario usuario, BindingResult resultado) {
         if (resultado.hasErrors()) {
-            return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foi informamdo corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foram informamdo corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         usuario = us.salvarUsuario(usuario);
 
@@ -36,7 +36,7 @@ public class UsuarioAPI {
         return new ResponseEntity(new Message("erro", "Não foi possível inserir o usuário no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // URL: http://localhost:8080/usuario/cadastrar
+    // URL: http://localhost:8080/usuario/atualizar
     @PutMapping(value = "/atualizar", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
     public ResponseEntity atualizarUsuario(@RequestBody @Valid Usuario usuario, BindingResult resultado) {
         if (resultado.hasErrors()) {
