@@ -131,6 +131,7 @@ public class Coletor {
 //        }
 //        return resposta;
 //    }
+    
     //lista 8
     // Request for: http://localhost:8080/coletor/link  
     @PutMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
@@ -149,28 +150,11 @@ public class Coletor {
         return resposta;
     }
 
-    //lista 9
-    // Request for: http://localhost:8080/coletor/link  
-    @DeleteMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-    public ResponseEntity removerLink(@RequestBody @Valid Link link, BindingResult resultado) {
-        ResponseEntity resposta = null;
-        if (resultado.hasErrors()) {
-            resposta = new ResponseEntity(new Message("erro", "Os dados sobre o link não foram informados corretamente"), HttpStatus.BAD_REQUEST);
-        } else {
-            link = cs.salvarLink(link);
-            if (link != null && link.getId() > 0) {
-                resposta = new ResponseEntity(new Message("sucesso", "link removido com sucesso"), HttpStatus.OK);
-            } else {
-                resposta = new ResponseEntity(new Message("erro", "Não foi possível remover o link informado no banco de dados"), HttpStatus.NOT_ACCEPTABLE);
-            }
-        }
-        return resposta;
-    }
 
     //remoção atraves do identificado ID
     // Request for: http://localhost:8080/coletor/link/{id} 
     @DeleteMapping(value = "/link/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity removerLink(@PathVariable(value = "id") Long id) {
+    public ResponseEntity removerLink(@PathVariable(value = "id")  Long id) {
         ResponseEntity resposta = null;
         if (id != null && id <= 0) {
             resposta = new ResponseEntity(new Message("erro", "os dados sobre o link não foram informado corretamente"), HttpStatus.BAD_REQUEST);
