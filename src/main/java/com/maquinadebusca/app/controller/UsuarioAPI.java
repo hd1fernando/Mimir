@@ -2,7 +2,7 @@ package com.maquinadebusca.app.controller;
 
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.service.UsuarioService;
-import com.maquinadebusca.app.usuario.Usuario;
+import com.maquinadebusca.app.model.Usuario;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

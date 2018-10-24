@@ -1,7 +1,7 @@
 package com.maquinadebusca.app.service;
 
 import com.maquinadebusca.app.repository.IUsuarioRepository;
-import com.maquinadebusca.app.usuario.Usuario;
+import com.maquinadebusca.app.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UsuarioService {

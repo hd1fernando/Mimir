@@ -8,6 +8,7 @@ package com.maquinadebusca.app.controller;
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.model.Documento;
 import com.maquinadebusca.app.model.Link;
+import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
 import java.util.List;
 import javax.validation.Valid;
@@ -45,7 +46,7 @@ public class Coletor {
     // URL: http://localhost:8080/coletor/host
     @GetMapping(value = "/host", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarHost() {
-        
+
         return new ResponseEntity(cs.getHost(), HttpStatus.OK);
     }
 
@@ -85,28 +86,33 @@ public class Coletor {
 
     //lista 6  recebe várias urls mas é incapaz de trata-las devido ao tipo em lk
     // Request for: http://localhost:8080/coletor/link  
-//    @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-//    public List<ResponseEntity> inserirLink(@RequestBody Sementes urls) {
-//        List<String> u = urls.getUrls();
-//        Link link = null;
-//        List<ResponseEntity> result = null;
-//        for (String lk : u) {
-//            //    link = cs.salvarLink(lk);
-//            if (link != null && link.getId() > 0) {
-//                result.add(new ResponseEntity(link, HttpStatus.OK));
-//            } else {
-//                result.add(new ResponseEntity(link, HttpStatus.BAD_REQUEST));
-//            }
-//
-//        }
-//
-//        return result;
-//    }
+    @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public List<ResponseEntity> inserirLink(@RequestBody Sementes urls) {
+        List<String> u = urls.getUrls();
+        Link link = null;
+        List<ResponseEntity> result = null;
+        
+        for (String lk : u) {
+            link.setUrl(lk);
+            link = cs.salvarLink(link);
+            
+            if (link != null && link.getId() > 0) {
+                result.add(new ResponseEntity(link, HttpStatus.OK));
+            } else {
+                result.add(new ResponseEntity(link, HttpStatus.BAD_REQUEST));
+            }
+
+        }
+
+        return result;
+    }
+
     //lista 7
     // Request for: http://localhost:8080/coletor/link  
     @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
     public ResponseEntity inserirLink(@RequestBody @Valid Link link, BindingResult resultado) {
         ResponseEntity resposta = null;
+        
         if (resultado.hasErrors()) {
             resposta = new ResponseEntity(new Message("erro", "Os dados sobre o link não foram informados corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
@@ -180,6 +186,5 @@ public class Coletor {
     public ResponseEntity encontarLink(@PathVariable(value = "url") String url) {
         return new ResponseEntity(cs.encontrarLinkUrl(url), HttpStatus.OK);
     }
-    
-   
+
 }

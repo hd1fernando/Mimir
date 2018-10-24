@@ -1,4 +1,4 @@
-package com.maquinadebusca.app.usuario;
+package com.maquinadebusca.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -30,7 +30,7 @@ public class Usuario {
     @Basic
     private String senha;
 
-    @NotBlank(message = "Tipo de permissão não pode ser vazio")
+    @NotBlank(message = "Tipo de permissão não pode ser vázio")
     private String permissao;
 
     public Usuario() {
@@ -67,7 +67,5 @@ public class Usuario {
     public void setPermissao(String permissao) {
         this.permissao = permissao;
     }
-    
-    
 
 }
