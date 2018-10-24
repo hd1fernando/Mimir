@@ -109,22 +109,22 @@ public class Coletor {
 
     //lista 7
     // Request for: http://localhost:8080/coletor/link  
-    @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-    public ResponseEntity inserirLink(@RequestBody @Valid Link link, BindingResult resultado) {
-        ResponseEntity resposta = null;
-        
-        if (resultado.hasErrors()) {
-            resposta = new ResponseEntity(new Message("erro", "Os dados sobre o link não foram informados corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
-        } else {
-            link = cs.salvarLink(link);
-            if (link != null && link.getId() > 0) {
-                resposta = new ResponseEntity(link, HttpStatus.OK);
-            } else {
-                resposta = new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return resposta;
-    }
+//    @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+//    public ResponseEntity inserirLink(@RequestBody @Valid Link link, BindingResult resultado) {
+//        ResponseEntity resposta = null;
+//        
+//        if (resultado.hasErrors()) {
+//            resposta = new ResponseEntity(new Message("erro", "Os dados sobre o link não foram informados corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
+//        } else {
+//            link = cs.salvarLink(link);
+//            if (link != null && link.getId() > 0) {
+//                resposta = new ResponseEntity(link, HttpStatus.OK);
+//            } else {
+//                resposta = new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//        return resposta;
+//    }
 
     //lista 8
     // Request for: http://localhost:8080/coletor/link  

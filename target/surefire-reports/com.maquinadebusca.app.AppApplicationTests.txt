@@ -1,9 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.maquinadebusca.app.AppApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 20.601 s <<< FAILURE! - in com.maquinadebusca.app.AppApplicationTests
-contextLoads(com.maquinadebusca.app.AppApplicationTests)  Time elapsed: 0 s  <<< ERROR!
-java.lang.IllegalStateException: Failed to load ApplicationContext
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'usuarioAPI': Unsatisfied dependency expressed through field 'us'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.maquinadebusca.app.service.UsuarioService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.maquinadebusca.app.service.UsuarioService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.815 s - in com.maquinadebusca.app.AppApplicationTests

@@ -15,7 +15,5 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Long>{
     
     @Override
     void deleteById(Long id);
-    
-    List<Usuario> findByPermissao(String nome);
-    
+        
 }

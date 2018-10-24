@@ -3,7 +3,9 @@ package com.maquinadebusca.app.service;
 import com.maquinadebusca.app.repository.IUsuarioRepository;
 import com.maquinadebusca.app.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsuarioService {
 
     @Autowired

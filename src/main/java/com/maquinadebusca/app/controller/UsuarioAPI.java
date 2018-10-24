@@ -29,9 +29,6 @@ public class UsuarioAPI {
             return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foi informamdo corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         usuario = us.salvarUsuario(usuario);
-        if (usuario.getPermissao().trim().toLowerCase().equals("comum") || usuario.getPermissao().trim().toLowerCase().equals("administrador")) {
-            return new ResponseEntity(new Message("erro", "Tipo de permissão errada. Apenas os tipos: 'comum' ou 'administrador são permitidos"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
         if (usuario != null && usuario.getId() > 0) {
             return new ResponseEntity(usuario, HttpStatus.OK);
@@ -46,9 +43,6 @@ public class UsuarioAPI {
             return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foram informados corretamente"), HttpStatus.BAD_REQUEST);
         }
         usuario = us.salvarUsuario(usuario);
-        if (usuario.getPermissao().trim().toLowerCase().equals("comum") || usuario.getPermissao().trim().toLowerCase().equals("administrador")) {
-            return new ResponseEntity(new Message("erro", "Tipo de permissão errada. Apenas os tipos: 'comum' ou 'administrador são permitidos"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
         if (usuario != null && usuario.getId() > 0) {
             return new ResponseEntity(usuario, HttpStatus.OK);
