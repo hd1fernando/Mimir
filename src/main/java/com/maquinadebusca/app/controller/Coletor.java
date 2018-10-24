@@ -10,6 +10,7 @@ import com.maquinadebusca.app.model.Documento;
 import com.maquinadebusca.app.model.Link;
 import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
+import java.util.LinkedList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.http.MediaType;
@@ -90,9 +91,10 @@ public class Coletor {
     public List<ResponseEntity> inserirLink(@RequestBody Sementes urls) {
         List<String> u = urls.getUrls();
         Link link = null;
-        List<ResponseEntity> result = null;
+        List<ResponseEntity> result = new LinkedList();
         
         for (String lk : u) {
+            link = new Link();
             link.setUrl(lk);
             link = cs.salvarLink(link);
             
