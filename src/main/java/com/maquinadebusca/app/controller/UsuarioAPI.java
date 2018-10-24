@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,10 +38,9 @@ public class UsuarioAPI {
         }
         return new ResponseEntity(new Message("erro", "Não foi possível inserir o usuário no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    // URL: http://localhost:8080/usuario/deletar
-
-    @DeleteMapping(value = "/deletar", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity removerUsuario(@RequestBody @Valid Usuario usuario, BindingResult resultado) {
+    // URL: http://localhost:8080/usuario/usuario
+    @DeleteMapping(value = "/usuario/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity removerUsuario(@PathVariable(value = "id") Long id) {
         ResponseEntity resposta = null;
         if (resultado.hasErrors()) {
             return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foram informados corretamente"), HttpStatus.BAD_REQUEST);
