@@ -63,35 +63,57 @@ public class Coletor {
         }
         Host host = cs.getHost(id);
         if (host == null) {
-            return new ResponseEntity(new Message("erro", "O Id informado não exite"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Message("erro", "O ID informado é inválido ou não existe"), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity(cs.getHost(id), HttpStatus.OK);
+        return new ResponseEntity(host, HttpStatus.OK);
 
     }
 
     // URL: http://localhost:8080/coletor/documento
     @GetMapping(value = "/documento", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarDocumento() {
-        return new ResponseEntity(cs.getDocumento(), HttpStatus.OK);
+        List<Documento> documento = cs.getDocumento();
+        if (documento == null) {
+            return new ResponseEntity(new Message("erro", "Não existe nehum documento salvo"), HttpStatus.NOT_IMPLEMENTED);
+        }
+        return new ResponseEntity(documento, HttpStatus.OK);
     }
 
     // Request for: http://localhost:8080/coletor/documento/{id}
     @GetMapping(value = "/documento/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarDocumento(@PathVariable(value = "id") long id) {
-        return new ResponseEntity(cs.getDocumento(id), HttpStatus.OK);
+        if (id <= 0) {
+            return new ResponseEntity(new Message("erro", "os dados sobre o documento não foram informado corretamente"), HttpStatus.BAD_REQUEST);
+        }
+        Documento documento = cs.getDocumento(id);
+        if (documento == null) {
+            return new ResponseEntity(new Message("erro", "O ID informado é inválido ou não existe"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(documento, HttpStatus.OK);
     }
 
     // URL: http://localhost:8080/coletor/link
     @GetMapping(value = "/link", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarLink() {
-        return new ResponseEntity(cs.getLink(), HttpStatus.OK);
+        List<Link> links = cs.getLink();
+        if (links == null) {
+            return new ResponseEntity(new Message("erro", "Não existe nenhum link salvo"), HttpStatus.NOT_IMPLEMENTED);
+        }
+        return new ResponseEntity(links, HttpStatus.OK);
     }
 
     // Request for: http://localhost:8080/coletor/link/{id}
     @GetMapping(value = "/link/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity listarLink(@PathVariable(value = "id") long id) {
-        return new ResponseEntity(cs.getLink(id), HttpStatus.OK);
+        if (id <= 0) {
+            return new ResponseEntity(new Message("erro", "os dados sobre o link não foram informado corretamente"), HttpStatus.BAD_REQUEST);
+        }
+        Link link = cs.getLink(id);
+        if (link == null) {
+            return new ResponseEntity(new Message("erros", "O ID informado é inválido ou não existe"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(link, HttpStatus.OK);
     }
 
     // Request for: http://localhost:8080/coletor/link  
