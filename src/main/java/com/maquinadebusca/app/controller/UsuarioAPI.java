@@ -31,21 +31,24 @@ public class UsuarioAPI {
         if (resultado.hasErrors()) {
             return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foram informamdo corretamente"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        usuario = us.salvarUsuario(usuario);
+        if (usuario.getSenha() == null || usuario.getSenha().equals("")) {
+            return new ResponseEntity(new Message("erro", "O campo de senha deve ser informado"), HttpStatus.BAD_REQUEST);
+        }
 
         if (usuario != null && usuario.getId() > 0) {
+            usuario = us.salvarUsuario(usuario);
             return new ResponseEntity(usuario, HttpStatus.OK);
         }
         return new ResponseEntity(new Message("erro", "Não foi possível inserir o usuário no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    // URL: http://localhost:8080/usuario/deletar
+
+    // URL: http://localhost:8080/usuario/deletar/{id}
     @DeleteMapping(value = "/deletar/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity removerUsuario(@PathVariable(value = "id") Long id) {
-        
-        if(us.removerUsuario(id)){
+        if (us.removerUsuario(id)) {
             return new ResponseEntity(new Message("sucesso", "usuário removido com sucesso"), HttpStatus.OK);
         }
-        return new ResponseEntity(new Message("erro", "Não foi possível inserir o usuário no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(new Message("erro", "Não foi possível remover o usuário."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // URL: http://localhost:8080/usuario/atualizar
@@ -54,9 +57,8 @@ public class UsuarioAPI {
         if (resultado.hasErrors()) {
             return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foram informados corretamente"), HttpStatus.BAD_REQUEST);
         }
-        usuario = us.salvarUsuario(usuario);
-
         if (usuario != null && usuario.getId() > 0) {
+            usuario = us.salvarUsuario(usuario);
             return new ResponseEntity(usuario, HttpStatus.OK);
         }
         return new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no banco de dados"), HttpStatus.NOT_ACCEPTABLE);

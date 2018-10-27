@@ -139,7 +139,6 @@ public class Coletor {
         return result;
     }
 
-    //lista 8
     // Request for: http://localhost:8080/coletor/link  
     @PutMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
     public ResponseEntity atualizarLink(@RequestBody @Valid Link link, BindingResult resultado) {
@@ -157,7 +156,6 @@ public class Coletor {
         return resposta;
     }
 
-    //remoção atraves do identificado ID
     // Request for: http://localhost:8080/coletor/link/{id} 
     @DeleteMapping(value = "/link/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity removerLink(@PathVariable(value = "id") Long id) {
