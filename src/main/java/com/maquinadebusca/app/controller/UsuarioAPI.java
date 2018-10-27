@@ -35,7 +35,7 @@ public class UsuarioAPI {
             return new ResponseEntity(new Message("erro", "O campo de senha deve ser informado"), HttpStatus.BAD_REQUEST);
         }
 
-        if (usuario != null && usuario.getId() > 0) {
+        if (usuario != null) {
             usuario = us.salvarUsuario(usuario);
             return new ResponseEntity(usuario, HttpStatus.OK);
         }
@@ -45,6 +45,10 @@ public class UsuarioAPI {
     // URL: http://localhost:8080/usuario/deletar/{id}
     @DeleteMapping(value = "/deletar/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity removerUsuario(@PathVariable(value = "id") Long id) {
+        if (id != null && id <= 0) {
+            return new ResponseEntity(new Message("erro", "os dados sobre o usuário não foram informado corretamente"), HttpStatus.BAD_REQUEST);
+        }
+
         if (us.removerUsuario(id)) {
             return new ResponseEntity(new Message("sucesso", "usuário removido com sucesso"), HttpStatus.OK);
         }
