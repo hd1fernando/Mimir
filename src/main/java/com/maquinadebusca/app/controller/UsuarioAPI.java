@@ -41,17 +41,11 @@ public class UsuarioAPI {
     // URL: http://localhost:8080/usuario/usuario
     @DeleteMapping(value = "/usuario/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity removerUsuario(@PathVariable(value = "id") Long id) {
-        ResponseEntity resposta = null;
-        if (resultado.hasErrors()) {
-            return new ResponseEntity(new Message("erro", "Os dados sobre o usuário não foram informados corretamente"), HttpStatus.BAD_REQUEST);
-        }
         
-        if(us.removerUsuario(usuario)){
+        if(us.removerUsuario(id)){
             return new ResponseEntity(new Message("sucesso", "usuário removido com sucesso"), HttpStatus.OK);
         }
-
         return new ResponseEntity(new Message("erro", "Não foi possível inserir o usuário no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     // URL: http://localhost:8080/usuario/atualizar
