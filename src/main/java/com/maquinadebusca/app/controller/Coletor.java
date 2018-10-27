@@ -42,7 +42,7 @@ public class Coletor {
         if (documento != null) {
             return new ResponseEntity(documento, HttpStatus.OK);
         }
-        return new ResponseEntity(new Message("erro", "Não foi possível inciaar a coleta"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(new Message("erro", "Não foi possível inciar a coleta"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // URL: http://localhost:8080/coletor/host
@@ -61,6 +61,11 @@ public class Coletor {
         if (id <= 0) {
             return new ResponseEntity(new Message("erro", "os dados sobre o link não foram informado corretamente"), HttpStatus.BAD_REQUEST);
         }
+        Host host = cs.getHost(id);
+        if (host == null) {
+            return new ResponseEntity(new Message("erro", "O Id informado não exite"), HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity(cs.getHost(id), HttpStatus.OK);
 
     }
@@ -112,7 +117,6 @@ public class Coletor {
         return result;
     }
 
-    
     //lista 8
     // Request for: http://localhost:8080/coletor/link  
     @PutMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
@@ -131,11 +135,10 @@ public class Coletor {
         return resposta;
     }
 
-
     //remoção atraves do identificado ID
     // Request for: http://localhost:8080/coletor/link/{id} 
     @DeleteMapping(value = "/link/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity removerLink(@PathVariable(value = "id")  Long id) {
+    public ResponseEntity removerLink(@PathVariable(value = "id") Long id) {
         ResponseEntity resposta = null;
         if (id != null && id <= 0) {
             resposta = new ResponseEntity(new Message("erro", "os dados sobre o link não foram informado corretamente"), HttpStatus.BAD_REQUEST);
