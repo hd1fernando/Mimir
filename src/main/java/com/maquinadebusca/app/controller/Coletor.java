@@ -160,7 +160,7 @@ public class Coletor {
     @DeleteMapping(value = "/link/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity removerLink(@PathVariable(value = "id") Long id) {
         ResponseEntity resposta = null;
-        if (id != null && id <= 0) {
+        if (id == null || id <= 0) {
             resposta = new ResponseEntity(new Message("erro", "os dados sobre o link não foram informado corretamente"), HttpStatus.BAD_REQUEST);
         } else {
             boolean respo = cs.removerLink(id);
@@ -171,6 +171,20 @@ public class Coletor {
             }
         }
         return resposta;
+    }
+
+    //Request for: http://localhost:8080/coletor/documento/{id}
+    @DeleteMapping(value = "documento/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity removerDocumento(@PathVariable(value = "id") Long id) {
+        if (id == null || id <= 0) {
+            return new ResponseEntity(new Message("erro", "os dados sobre o documento não foram informado corretamente"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (cs.removerDocumento(id)) {
+            return new ResponseEntity(new Message("Sucesso", "Documento removido com sucesso."), HttpStatus.OK);
+        }
+        return new ResponseEntity(new Message("erro", "não foi possível remover o documento informado do banco de dados"), HttpStatus.NOT_ACCEPTABLE);
+
     }
 
     //lista 10

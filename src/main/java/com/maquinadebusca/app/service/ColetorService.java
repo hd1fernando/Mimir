@@ -160,6 +160,17 @@ public class ColetorService {
         }
         return false;
     }
+    
+        public Boolean removerDocumento(long id) {
+        try {
+            dr.deleteById(id);
+            return true;
+        } catch (Exception ex) {
+            System.err.println("\n>> Não foi possível deletar o documento informado no Banco de Dados\n");
+            ex.printStackTrace();
+        }
+        return false;
+    }
 
     public List<Link> encontrarLinkUrl(String url) {
         return lr.findByUrlIgnoreCaseContaining(url);
