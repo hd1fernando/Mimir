@@ -187,11 +187,14 @@ public class Coletor {
 
     }
 
-    //lista 10
-    // Request for: http://localhost:8080/coletor/encontar/{id}
-    @GetMapping(value = "/encontar/{url}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    // Request for: http://localhost:8080/coletor/encontrar/{url}
+    @GetMapping(value = "/encontrar/{url}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity encontarLink(@PathVariable(value = "url") String url) {
-        return new ResponseEntity(cs.encontrarLinkUrl(url), HttpStatus.OK);
+        List<Link> urlEncontrada = cs.encontrarLinkUrl(url);
+        if (urlEncontrada == null || urlEncontrada.isEmpty()) {
+            return new ResponseEntity(new Message("erro", "não foi possível encontrar a url informada"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(urlEncontrada, HttpStatus.OK);
     }
 
 }

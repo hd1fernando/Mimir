@@ -3,6 +3,7 @@ package com.maquinadebusca.app.controller;
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.service.UsuarioService;
 import com.maquinadebusca.app.model.Usuario;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -66,5 +68,14 @@ public class UsuarioAdminstradorAPI {
             return new ResponseEntity(usuario, HttpStatus.OK);
         }
         return new ResponseEntity(new Message("erro", "Não foi possível inserir o link informado no banco de dados"), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    // URL: http://localhost:8080/admin/encontrar/{nome}
+    @GetMapping(value = "/encontrar/{nome}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity encontarAdmin(@PathVariable(value = "nome") String nome){
+        List<Usuario> nomeEncontrado =  us.encontarUsuarioNome(nome);
+        if(nomeEncontrado == null || nomeEncontrado.isEmpty())
+            return new ResponseEntity(new Message("erro", "O nome de usuário informado não existe."), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(nomeEncontrado, HttpStatus.OK);
     }
 }
