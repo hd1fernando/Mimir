@@ -187,14 +187,24 @@ public class Coletor {
 
     }
 
-    // Request for: http://localhost:8080/coletor/encontrar/{url}
-    @GetMapping(value = "/encontrar/{url}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    // Request for: http://localhost:8080/coletor/link/encontrar/{url}
+    @GetMapping(value = "/link/encontrar/{url}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity encontarLink(@PathVariable(value = "url") String url) {
         List<Link> urlEncontrada = cs.encontrarLinkUrl(url);
         if (urlEncontrada == null || urlEncontrada.isEmpty()) {
             return new ResponseEntity(new Message("erro", "não foi possível encontrar a url informada"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(urlEncontrada, HttpStatus.OK);
+    }
+
+    // Request for: http://localhost:8080/coletor/host/encontrar/{host}
+    @GetMapping(value = "/host/encontrar/{host}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity encontarHist(@PathVariable(value = "host") String host) {
+        List<Host> hostEncontrado = cs.encontrarHost(host);
+        if (hostEncontrado == null || hostEncontrado.isEmpty()) {
+            return new ResponseEntity(new Message("erro", "não foi possível encontrar o host informada"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(hostEncontrado, HttpStatus.OK);
     }
 
 }

@@ -175,6 +175,10 @@ public class ColetorService {
     public List<Link> encontrarLinkUrl(String url) {
         return lr.findByUrlIgnoreCaseContaining(url);
     }
+    
+    public List<Host> encontrarHost(String host){
+        return hr.findByHostIgnoreCaseContaining(host);
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public List<Host> getHost() {

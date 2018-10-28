@@ -19,9 +19,11 @@ public interface IHostRepository extends JpaRepository<Host, Long> {
 
     @Override
     List<Host> findAll();
-    
+
     List<String> findByHost(String name);
-    
+
     Host findById(long id);
+
+    List<Host> findByHostIgnoreCaseContaining(String host);
 
 }
