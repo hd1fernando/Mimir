@@ -160,8 +160,8 @@ public class ColetorService {
         }
         return false;
     }
-    
-        public Boolean removerDocumento(long id) {
+
+    public Boolean removerDocumento(long id) {
         try {
             dr.deleteById(id);
             return true;
@@ -172,11 +172,19 @@ public class ColetorService {
         return false;
     }
 
+    public List<Link> listarEmOrdemAlfabetica(){
+       return lr.getInLexicalOrder();
+    }
+    
+    public List<Host> listarEmOderAlfabetica(){
+        return hr.getInLexicalOrder();
+    }
+    
     public List<Link> encontrarLinkUrl(String url) {
         return lr.findByUrlIgnoreCaseContaining(url);
     }
-    
-    public List<Host> encontrarHost(String host){
+
+    public List<Host> encontrarHost(String host) {
         return hr.findByHostIgnoreCaseContaining(host);
     }
 

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {
-    
+
     @Autowired
     IUsuarioRepository ur;
-    
+
     public Usuario salvarUsuario(Usuario usuario) {
         Usuario u = null;
         try {
@@ -22,7 +22,7 @@ public class UsuarioService {
         }
         return u;
     }
-    
+
     public Boolean removerUsuario(Usuario usuario) {
         try {
             ur.delete(usuario);
@@ -33,7 +33,7 @@ public class UsuarioService {
         }
         return false;
     }
-    
+
     public Boolean removerUsuario(long id) {
         try {
             ur.deleteById(id);
@@ -43,10 +43,14 @@ public class UsuarioService {
             ex.printStackTrace();
         }
         return false;
-    }    
-    
+    }
+
     public List<Usuario> encontarUsuarioNome(String nome) {
         return ur.findByUsuarioIgnoreCaseContaining(nome);
     }
-    
+
+    public List<Usuario> listarEmOrdemAlfabetica() {
+        return ur.getInLexicalOrder();
+    }
+
 }

@@ -42,4 +42,15 @@ public class UsuarioAPI {
         }
         return new ResponseEntity(usuarioEncontrado, HttpStatus.OK);
     }
+
+    // URL: http://localhost:8080/usuario/ordemAlfabetica
+    @GetMapping(value = "/ordemAlfabetica", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity listarEmOrdemAlfabetica() {
+        List<Usuario> listaOrdenada = us.listarEmOrdemAlfabetica();
+        if (listaOrdenada.isEmpty() || listaOrdenada == null) {
+            return new ResponseEntity(new Message("erro", "não existe nenhum usuário cadastrado no banco de dados"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(listaOrdenada, HttpStatus.OK);
+    }
+
 }

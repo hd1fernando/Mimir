@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/coletor") // URL: http://localhost:8080/coletor
 public class Coletor {
 
+    //incompletos: 08, 09, 10, 
+    //duvidas: validação de qual usuário está logado; usar melhor o status code
     @Autowired
     ColetorService cs;
 
@@ -207,4 +209,24 @@ public class Coletor {
         return new ResponseEntity(hostEncontrado, HttpStatus.OK);
     }
 
+    // Request for: http://localhost:8080/coletor/link/ordemAlfabetica
+    @GetMapping(value = "/link/ordemAlfabetica", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity listarEmOrdemAlfabetica() {
+        List<Link> listaOrdenada = cs.listarEmOrdemAlfabetica();
+
+        if (listaOrdenada.isEmpty() || listaOrdenada == null) {
+            return new ResponseEntity(new Message("erro", "não existe links salvos no banco de dados"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(listaOrdenada, HttpStatus.OK);
+    }
+
+    // Request for: http://localhost:8080/coletor/host/ordemAlfabetica
+    @GetMapping(value = "/host/ordemAlfabetica", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity listarHostEmOrderAlfabetica() {
+        List<Host> listaOrdenada = cs.listarEmOderAlfabetica();
+        if (listaOrdenada.isEmpty() || listaOrdenada == null) {
+            return new ResponseEntity(new Message("erro", "não existe hosts salvos no banco de dados"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(listaOrdenada, HttpStatus.OK);
+    }
 }

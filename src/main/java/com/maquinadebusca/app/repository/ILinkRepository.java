@@ -8,6 +8,7 @@ package com.maquinadebusca.app.repository;
 import com.maquinadebusca.app.model.Link;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -29,4 +30,7 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
     void deleteById(Long id);
     
     List<Link> findByUrlIgnoreCaseContaining(String url);
+    
+    @Query(value = "SELECT * FROM link ORDER BY url", nativeQuery = true)
+    List<Link> getInLexicalOrder();
 }
