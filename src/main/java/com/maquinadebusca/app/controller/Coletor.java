@@ -5,6 +5,8 @@
  */
 package com.maquinadebusca.app.controller;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.maquinadebusca.app.Message.Message;
 import com.maquinadebusca.app.model.Documento;
 import com.maquinadebusca.app.model.Host;
@@ -33,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class Coletor {
 
     //incompletos: 08, 09, 10, 
-    //duvidas: validação de qual usuário está logado; usar melhor o status code
+    //duvidas: validação de qual usuário está logado; usar melhor o status code, qual documentação
     @Autowired
     ColetorService cs;
 
@@ -117,25 +119,28 @@ public class Coletor {
         }
         return new ResponseEntity(link, HttpStatus.OK);
     }
+    //				"ultimaColeta":"2018-01-12T00:00:00"
 
     // Request for: http://localhost:8080/coletor/link  
     @PostMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     public List<ResponseEntity> inserirLink(@RequestBody Sementes urls) {
         List<String> u = urls.getUrls();
         Link link = null;
         List<ResponseEntity> result = new LinkedList();
-
+        int position = 0;
         for (String lk : u) {
             link = new Link();
             link.setUrl(lk);
+            link.setUltimaColeta(urls.getUltimaColeta().get(position));
             link = cs.salvarLink(link);
 
             if (link != null && link.getId() > 0) {
                 result.add(new ResponseEntity(link, HttpStatus.OK));
             } else {
-                result.add(new ResponseEntity(link, HttpStatus.BAD_REQUEST));
+                result.add(new ResponseEntity(new Message("erro", "os dados não foram enviados corretamente"), HttpStatus.BAD_REQUEST));
             }
-
+            position++;
         }
 
         return result;
@@ -143,6 +148,7 @@ public class Coletor {
 
     // Request for: http://localhost:8080/coletor/link  
     @PutMapping(value = "/link", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     public ResponseEntity atualizarLink(@RequestBody @Valid Link link, BindingResult resultado) {
         ResponseEntity resposta = null;
         if (resultado.hasErrors()) {
