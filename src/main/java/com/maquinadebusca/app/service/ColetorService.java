@@ -16,7 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -91,7 +91,7 @@ public class ColetorService {
             documento.setVisao(FiltrarStopWords(d.text(), idioma));
 
             link.setUrl(urlDocumento);
-            link.setUltimaColeta(LocalDateTime.now());
+            link.setUltimaColeta(LocalDate.now());
             documento.addLink(link);
             int i = 0;
             for (Element url : urls) {
@@ -104,7 +104,7 @@ public class ColetorService {
                     }
                     link = new Link();
                     link.setUrl(u);
-                    link.setUltimaColeta(LocalDateTime.now());
+                    link.setUltimaColeta(LocalDate.now());
                     documento.addLink(link);
                 }
             }
