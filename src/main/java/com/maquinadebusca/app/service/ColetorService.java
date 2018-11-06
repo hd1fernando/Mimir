@@ -218,6 +218,10 @@ public class ColetorService {
         resultado = resultado.substring(0, resultado.length() - 2);
         return "{\" Resposta: \": [" + resultado + "]}";
     }
+    
+    public List<Link> pesquisarLinkIntervaloIdentificacao(Long id1, Long id2){
+        return lr.findLinkByIdRange(id1, id2);
+    }
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Getters">

@@ -38,4 +38,7 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
 
     @Query(value = "SELECT * FROM link", nativeQuery = true)
     public Slice<Link> getPage(Pageable pageable);
+
+    @Query(value = "SELECT * FROM link WHERE id BETWEEN ?1 AND ?2", nativeQuery = true)
+    List<Link> findLinkByIdRange(Long id1, Long id2);
 }

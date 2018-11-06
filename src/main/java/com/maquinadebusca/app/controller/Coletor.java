@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class Coletor {
 
     //incompletos: 08, 09, 10, 
-    //duvidas: validação de qual usuário está logado; usar melhor o status code, qual documentação
+    //duvidas: 3 da prática 13
     @Autowired
     ColetorService cs;
 
@@ -245,11 +245,21 @@ public class Coletor {
         }
         return new ResponseEntity(pagina, HttpStatus.OK);
     }
-    
-        // Request for: http://localhost:8080/coletor/link/pagina/{num}
+
+    // Request for: http://localhost:8080/coletor/link/pagina/{num}
     @GetMapping(value = "/link/pagina/{num}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-    public ResponseEntity listarPagina(@PathVariable(value = "num") String pagina){
+    public ResponseEntity listarPagina(@PathVariable(value = "num") String pagina) {
         return null;
+    }
+
+    // Request for: http://localhost:8080/coletor/link/intervalo/{id1}/{id2}
+    @GetMapping(value = "/link/intervalo/{id1}/{id2}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public ResponseEntity encontrarLinkIntervaloId(@PathVariable(value = "id1") Long id1, @PathVariable(value = "id2") Long id2) {
+        List<Link> links = cs.pesquisarLinkIntervaloIdentificacao(id1, id2);
+        if (links.isEmpty() || links == null) {
+            return new ResponseEntity(new Message("erro", "não existe links entre os ids informados no banco de dados"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(links, HttpStatus.OK);
     }
 
 }
