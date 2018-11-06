@@ -256,7 +256,7 @@ public class Coletor {
     @GetMapping(value = "/link/intervalo/{id1}/{id2}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
     public ResponseEntity encontrarLinkIntervaloId(@PathVariable(value = "id1") Long id1, @PathVariable(value = "id2") Long id2) {
         List<Link> links = cs.pesquisarLinkIntervaloIdentificacao(id1, id2);
-        if (links.isEmpty() || links == null) {
+        if(links.isEmpty() || links == null){
             return new ResponseEntity(new Message("erro", "não existe links entre os ids informados no banco de dados"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(links, HttpStatus.OK);

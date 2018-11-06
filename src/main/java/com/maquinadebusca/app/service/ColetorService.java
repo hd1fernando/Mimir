@@ -186,7 +186,7 @@ public class ColetorService {
     }
 
     public List<Link> encontrarLinkUrl(String url) {
-        return lr.findByUrlIgnoreCaseContaining(url);
+        return lr.findByUrlName(url);
     }
 
     public List<Host> encontrarHost(String host) {

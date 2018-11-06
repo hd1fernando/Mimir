@@ -31,7 +31,8 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
     @Override
     void deleteById(Long id);
 
-    List<Link> findByUrlIgnoreCaseContaining(String url);
+    @Query(value = "SELECT * FROM link WHERE url LIKE %?1%", nativeQuery = true)
+    List<Link> findByUrlName(String url);
 
     @Query(value = "SELECT * FROM link ORDER BY url", nativeQuery = true)
     List<Link> getInLexicalOrder();
