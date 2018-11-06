@@ -235,4 +235,14 @@ public class Coletor {
         }
         return new ResponseEntity(listaOrdenada, HttpStatus.OK);
     }
+
+    // Request for: http://localhost:8080/coletor/link/pagina
+    @GetMapping(value = "/link/pagina", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public ResponseEntity listarPagina() {
+        String pagina = cs.buscarPagina();
+        if (pagina == null || pagina.equals("")) {
+            return new ResponseEntity(new Message("erro", "não existe páginas salvas no banco de dados"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(pagina, HttpStatus.OK);
+    }
 }

@@ -29,6 +29,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -128,6 +132,7 @@ public class ColetorService {
         return documento;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Ações">
     public Link salvarLink(Link link) {
         Link l = null;
         try {
@@ -172,14 +177,14 @@ public class ColetorService {
         return false;
     }
 
-    public List<Link> listarEmOrdemAlfabetica(){
-       return lr.getInLexicalOrder();
+    public List<Link> listarEmOrdemAlfabetica() {
+        return lr.getInLexicalOrder();
     }
-    
-    public List<Host> listarEmOderAlfabetica(){
+
+    public List<Host> listarEmOderAlfabetica() {
         return hr.getInLexicalOrder();
     }
-    
+
     public List<Link> encontrarLinkUrl(String url) {
         return lr.findByUrlIgnoreCaseContaining(url);
     }
@@ -187,6 +192,26 @@ public class ColetorService {
     public List<Host> encontrarHost(String host) {
         return hr.findByHostIgnoreCaseContaining(host);
     }
+
+    public String buscarPagina() {
+        Slice<Link> pagina = null;
+        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "url"));
+        while (true) {
+            pagina = lr.getPage(pageable);
+            int numeroPagina = pagina.getNumber();
+            int numeroElementosPagina = pagina.getNumberOfElements();
+            int tamanhoPagina = pagina.getSize();
+            System.out.println("\n\nPágina: " + numeroPagina + "\nNúmero de elementos: " + numeroElementosPagina + "\nTamanho da página: " + tamanhoPagina);
+            List<Link> links = pagina.getContent();
+            links.forEach(System.out::println);
+            if (!pagina.hasNext()) {
+                break;
+            }
+            pageable = pagina.nextPageable();
+        }
+        return "{\" Resposta: \": \"OK\"}";
+    }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public List<Host> getHost() {

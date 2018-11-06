@@ -7,6 +7,8 @@ package com.maquinadebusca.app.repository;
 
 import com.maquinadebusca.app.model.Link;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -33,4 +35,7 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
     
     @Query(value = "SELECT * FROM link ORDER BY url", nativeQuery = true)
     List<Link> getInLexicalOrder();
+    
+    @Query(value = "SELECT * FROM link", nativeQuery = true)
+    public Slice<Link> getPage(Pageable pageable);
 }
