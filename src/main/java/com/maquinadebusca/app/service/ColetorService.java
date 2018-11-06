@@ -195,24 +195,31 @@ public class ColetorService {
 
     public String buscarPagina() {
         Slice<Link> pagina = null;
+        String resultado = "";
         Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "url"));
         while (true) {
             pagina = lr.getPage(pageable);
             int numeroPagina = pagina.getNumber();
             int numeroElementosPagina = pagina.getNumberOfElements();
             int tamanhoPagina = pagina.getSize();
-            System.out.println("\n\nPágina: " + numeroPagina + "\nNúmero de elementos: " + numeroElementosPagina + "\nTamanho da página: " + tamanhoPagina);
+            System.out.println("\n\nPágina: " + numeroPagina
+                    + " Número de elementos: " + numeroElementosPagina
+                    + " Tamanho da página: " + tamanhoPagina);
             List<Link> links = pagina.getContent();
-            links.forEach(System.out::println);
+            for (Link l : links) {
+                System.out.println(l.getUrl());
+                resultado += "\"" + l.getUrl() + "\",\n";
+            }
             if (!pagina.hasNext()) {
                 break;
             }
             pageable = pagina.nextPageable();
         }
-        return "{\" Resposta: \": \"OK\"}";
+        resultado = resultado.substring(0, resultado.length() - 2);
+        return "{\" Resposta: \": [" + resultado + "]}";
     }
-    //</editor-fold>
 
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public List<Host> getHost() {
         Iterable<Host> hosts = hr.findAll();

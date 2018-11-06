@@ -30,12 +30,12 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
 
     @Override
     void deleteById(Long id);
-    
+
     List<Link> findByUrlIgnoreCaseContaining(String url);
-    
+
     @Query(value = "SELECT * FROM link ORDER BY url", nativeQuery = true)
     List<Link> getInLexicalOrder();
-    
+
     @Query(value = "SELECT * FROM link", nativeQuery = true)
     public Slice<Link> getPage(Pageable pageable);
 }

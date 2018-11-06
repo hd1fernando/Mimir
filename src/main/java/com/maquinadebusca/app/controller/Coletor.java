@@ -245,4 +245,11 @@ public class Coletor {
         }
         return new ResponseEntity(pagina, HttpStatus.OK);
     }
+    
+        // Request for: http://localhost:8080/coletor/link/pagina/{num}
+    @GetMapping(value = "/link/pagina/{num}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public ResponseEntity listarPagina(@PathVariable(value = "num") String pagina){
+        return null;
+    }
+
 }
