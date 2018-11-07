@@ -227,6 +227,10 @@ public class ColetorService {
         return lr.countLinkByIdRange(id1, id2);
     }
 
+    public LocalDate encontrarLinkHora(LocalDate data1, LocalDate data2){
+        return lr.findByTime(data1, data2);
+    }
+    
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public List<Host> getHost() {

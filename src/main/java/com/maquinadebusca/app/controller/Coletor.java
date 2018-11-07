@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.maquinadebusca.app.controller;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -13,6 +8,8 @@ import com.maquinadebusca.app.model.Host;
 import com.maquinadebusca.app.model.Link;
 import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import javax.validation.Valid;
@@ -35,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class Coletor {
 
     //incompletos: 08, 09, 10, 
-    //duvidas: 3 da prática 13
     @Autowired
     ColetorService cs;
 
@@ -271,5 +267,17 @@ public class Coletor {
         }
         return new ResponseEntity(contador, HttpStatus.OK);
     }
+    
+        // Request for: http://localhost:8080/coletor/link/intervalo/horas/{data1}/{data2}
+        //padrao de horas 2018-01-12 00:00:00
+    @GetMapping(value = "/link/intervalo/horas/{data1}/{data2}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity contarLinkPorIntervaloDeData(@PathVariable(value = "data1") String data1, @PathVariable(value = "data2") String data2){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+        LocalDate date1 = LocalDate.parse(data1,formatter);
+        LocalDate date2 = LocalDate.parse(data2,formatter);
+        return new ResponseEntity(cs.encontrarLinkHora(date1, date2),HttpStatus.OK);
+    }
+            
+            
 
 }

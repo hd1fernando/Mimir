@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.maquinadebusca.app.repository;
 
 import com.maquinadebusca.app.model.Link;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -13,10 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-/**
- *
- * @author fernando
- */
 public interface ILinkRepository extends JpaRepository<Link, Long> {
 
     List<String> findByUrl(String nome);
@@ -46,4 +38,7 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
 
     @Query(value = "SELECT COUNT(*) FROM link WHERE id between :identificador1 and :identificador2", nativeQuery = true)
     Long countLinkByIdRange(@Param("identificador1") Long id1, @Param("identificador2") Long id2);
+
+    @Query(value ="select * from link where ultima_coleta between :data1 and :data2", nativeQuery = true )
+    LocalDate findByTime (@Param("data1")LocalDate data1, @Param("data2")LocalDate data2);
 }
