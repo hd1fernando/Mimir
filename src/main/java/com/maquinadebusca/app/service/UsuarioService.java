@@ -45,12 +45,5 @@ public class UsuarioService {
         return false;
     }
 
-    public List<Usuario> encontarUsuarioNome(String nome) {
-        return ur.findByUsuarioIgnoreCaseContaining(nome);
-    }
-
-    public List<Usuario> listarEmOrdemAlfabetica() {
-        return ur.getInLexicalOrder();
-    }
 
 }

@@ -8,9 +8,11 @@ com/maquinadebusca/app/Message/Message.class
 com/maquinadebusca/app/sementes/Sementes.class
 com/maquinadebusca/app/controller/Coletor.class
 com/maquinadebusca/app/AppApplication.class
+com/maquinadebusca/app/model/UsuarioPai.class
 com/maquinadebusca/app/controller/UsuarioAPI.class
 com/maquinadebusca/app/repository/IUsuarioRepository.class
 com/maquinadebusca/app/model/Link.class
+com/maquinadebusca/app/model/Administrador.class
 com/maquinadebusca/app/service/UsuarioService.class
 com/maquinadebusca/app/repository/IDocumentoRepository.class
 com/maquinadebusca/app/controller/UsuarioAdminstradorAPI.class

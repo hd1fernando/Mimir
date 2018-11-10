@@ -22,7 +22,6 @@ import com.maquinadebusca.app.Message.Message;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioAPI {
-
     @Autowired
     UsuarioService us;
 
@@ -31,26 +30,6 @@ public class UsuarioAPI {
     public ResponseEntity removerConta() {
         //capturar o id do usuario logado e remover a conta
         return null;
-    }
-
-    // Request for: http://localhost:8080/usuario/encontrar/{nome}
-    @GetMapping(value = "/encontrar/{nome}", params = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity encontrarUsuario(@PathVariable(value = "nome") String nome) {
-        List<Usuario> usuarioEncontrado = us.encontarUsuarioNome(nome);
-        if (usuarioEncontrado == null || usuarioEncontrado.isEmpty()) {
-            return new ResponseEntity(new Message("erro", "o usuário informado não existe"), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(usuarioEncontrado, HttpStatus.OK);
-    }
-
-    // URL: http://localhost:8080/usuario/ordemAlfabetica
-    @GetMapping(value = "/ordemAlfabetica", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity listarEmOrdemAlfabetica() {
-        List<Usuario> listaOrdenada = us.listarEmOrdemAlfabetica();
-        if (listaOrdenada.isEmpty() || listaOrdenada == null) {
-            return new ResponseEntity(new Message("erro", "não existe nenhum usuário cadastrado no banco de dados"), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(listaOrdenada, HttpStatus.OK);
     }
 
 }
