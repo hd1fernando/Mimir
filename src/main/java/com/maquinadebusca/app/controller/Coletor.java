@@ -243,9 +243,17 @@ public class Coletor {
     }
 
     // Request for: http://localhost:8080/coletor/link/pagina/{num}
-    @GetMapping(value = "/link/pagina/{num}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-    public ResponseEntity listarPagina(@PathVariable(value = "num") String pagina) {
-        return null;
+    @GetMapping(value = "link/pagina/{num}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+    public ResponseEntity listarPagina(@PathVariable(value = "num") int num) {
+        if (num <= 0) {
+            return new ResponseEntity(new Message("erro", "apenas números maiores do que 0 são permitidos"), HttpStatus.BAD_REQUEST);
+        }
+        
+        String pagina = cs.buscarPagina(num);
+        if (pagina == null || pagina.equals("")) {
+            return new ResponseEntity(new Message("erro", "o número de página informado não existe no banco de dados"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(pagina, HttpStatus.OK);
     }
 
     // Request for: http://localhost:8080/coletor/link/intervalo/{id1}/{id2}
@@ -267,17 +275,15 @@ public class Coletor {
         }
         return new ResponseEntity(contador, HttpStatus.OK);
     }
-    
-        // Request for: http://localhost:8080/coletor/link/intervalo/horas/{data1}/{data2}
-        //padrao de horas 2018-01-12 00:00:00
+
+    // Request for: http://localhost:8080/coletor/link/intervalo/horas/{data1}/{data2}
+    //padrao de horas 2018-01-12 00:00:00
     @GetMapping(value = "/link/intervalo/horas/{data1}/{data2}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity contarLinkPorIntervaloDeData(@PathVariable(value = "data1") String data1, @PathVariable(value = "data2") String data2){
+    public ResponseEntity contarLinkPorIntervaloDeData(@PathVariable(value = "data1") String data1, @PathVariable(value = "data2") String data2) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-        LocalDate date1 = LocalDate.parse(data1,formatter);
-        LocalDate date2 = LocalDate.parse(data2,formatter);
-        return new ResponseEntity(cs.encontrarLinkHora(date1, date2),HttpStatus.OK);
+        LocalDate date1 = LocalDate.parse(data1, formatter);
+        LocalDate date2 = LocalDate.parse(data2, formatter);
+        return new ResponseEntity(cs.encontrarLinkHora(date1, date2), HttpStatus.OK);
     }
-            
-            
 
 }

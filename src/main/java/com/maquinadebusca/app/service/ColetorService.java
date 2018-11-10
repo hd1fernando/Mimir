@@ -196,7 +196,7 @@ public class ColetorService {
     public String buscarPagina() {
         Slice<Link> pagina = null;
         String resultado = "";
-        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "url"));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "url"));
         while (true) {
             pagina = lr.getPage(pageable);
             int numeroPagina = pagina.getNumber();
@@ -219,6 +219,23 @@ public class ColetorService {
         return "{\" Resposta: \": [" + resultado + "]}";
     }
 
+    public String buscarPagina(int num) {
+        num--;
+        Slice<Link> pagina = null;
+        String resultado = "";
+        Pageable pageable = PageRequest.of(num, 10, Sort.by(Sort.Direction.DESC, "url"));
+        pagina = lr.getPage(pageable);
+
+        List<Link> links = pagina.getContent();
+        for (Link l : links) {
+            System.out.println(l.getUrl());
+            resultado += "\"" + l.getUrl() + "\",\n";
+        }
+
+        resultado = resultado.substring(0, resultado.length() - 2);
+        return "{\" Resposta: \": [" + resultado + "]}";
+    }
+
     public List<Link> pesquisarLinkIntervaloIdentificacao(Long id1, Long id2) {
         return lr.findLinkByIdRange(id1, id2);
     }
@@ -227,10 +244,10 @@ public class ColetorService {
         return lr.countLinkByIdRange(id1, id2);
     }
 
-    public LocalDate encontrarLinkHora(LocalDate data1, LocalDate data2){
+    public LocalDate encontrarLinkHora(LocalDate data1, LocalDate data2) {
         return lr.findByTime(data1, data2);
     }
-    
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public List<Host> getHost() {
