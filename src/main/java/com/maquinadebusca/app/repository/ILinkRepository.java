@@ -42,7 +42,7 @@ public interface ILinkRepository extends JpaRepository<Link, Long> {
     Long countLinkByIdRange(@Param("identificador1") Long id1, @Param("identificador2") Long id2);
 
     @Query(value = "select * from link where ultima_coleta between :data1 and :data2", nativeQuery = true)
-    LocalDateTime findByTime(@Param("data1") LocalDateTime data1, @Param("data2") LocalDateTime data2);
+    List<Link> findByTime(@Param("data1") LocalDateTime data1, @Param("data2") LocalDateTime data2);
 
     @Transactional
     @Modifying

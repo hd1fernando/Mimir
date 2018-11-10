@@ -244,7 +244,7 @@ public class ColetorService {
         return lr.countLinkByIdRange(id1, id2);
     }
 
-    public LocalDateTime encontrarLinkHora(LocalDateTime data1, LocalDateTime data2) {
+    public List<Link> encontrarLinkHora(LocalDateTime data1, LocalDateTime data2) {
         return lr.findByTime(data1, data2);
     }
 

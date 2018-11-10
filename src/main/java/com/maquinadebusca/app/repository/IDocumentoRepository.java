@@ -14,4 +14,6 @@ public interface IDocumentoRepository extends JpaRepository<Documento, Long> {
     List<Documento> findAll();
 
     Documento findById(long id);
+    
+    
 }

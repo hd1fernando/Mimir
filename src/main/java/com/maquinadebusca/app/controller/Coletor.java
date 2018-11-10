@@ -281,7 +281,11 @@ public class Coletor {
     @GetMapping(value = "/link/intervalo/horas/{data1}/{data2}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity contarLinkPorIntervaloDeData(@PathVariable(value = "data1") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime data1,
             @PathVariable(value = "data2") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime data2) {
-        return new ResponseEntity(cs.encontrarLinkHora(data1, data2), HttpStatus.OK);
+        List<Link> links = cs.encontrarLinkHora(data1, data2);
+        if (links == null || links.isEmpty()) {
+            return new ResponseEntity(new Message("erro", "não existe dados para os valores passados"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(links, HttpStatus.OK);
     }
 
     // Request for: http://localhost:8080/coletor/link/ultima/coleta/{host}/{data}
