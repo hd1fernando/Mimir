@@ -8,8 +8,7 @@ import com.maquinadebusca.app.model.Host;
 import com.maquinadebusca.app.model.Link;
 import com.maquinadebusca.app.sementes.Sementes;
 import com.maquinadebusca.app.service.ColetorService;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import javax.validation.Valid;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -248,7 +248,7 @@ public class Coletor {
         if (num <= 0) {
             return new ResponseEntity(new Message("erro", "apenas números maiores do que 0 são permitidos"), HttpStatus.BAD_REQUEST);
         }
-        
+
         String pagina = cs.buscarPagina(num);
         if (pagina == null || pagina.equals("")) {
             return new ResponseEntity(new Message("erro", "o número de página informado não existe no banco de dados"), HttpStatus.BAD_REQUEST);
@@ -279,11 +279,16 @@ public class Coletor {
     // Request for: http://localhost:8080/coletor/link/intervalo/horas/{data1}/{data2}
     //padrao de horas 2018-01-12 00:00:00
     @GetMapping(value = "/link/intervalo/horas/{data1}/{data2}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity contarLinkPorIntervaloDeData(@PathVariable(value = "data1") String data1, @PathVariable(value = "data2") String data2) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-        LocalDate date1 = LocalDate.parse(data1, formatter);
-        LocalDate date2 = LocalDate.parse(data2, formatter);
-        return new ResponseEntity(cs.encontrarLinkHora(date1, date2), HttpStatus.OK);
+    public ResponseEntity contarLinkPorIntervaloDeData(@PathVariable(value = "data1") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime data1,
+            @PathVariable(value = "data2") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime data2) {
+        return new ResponseEntity(cs.encontrarLinkHora(data1, data2), HttpStatus.OK);
+    }
+
+    // Request for: http://localhost:8080/coletor/link/ultima/coleta/{host}/{data}
+    @PutMapping(value = "/link/ultima/coleta/{host}/{data}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity atualizarUltimaColeta(@PathVariable(value = "host") String host, @PathVariable(value = "data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime data) {
+        int n = cs.atualizarUltimaDataColeta(host, data);
+        return new ResponseEntity(new Message("sucesso", "número de registros atualizados " + n), HttpStatus.OK);
     }
 
 }

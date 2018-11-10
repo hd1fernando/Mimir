@@ -7,7 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,7 +38,7 @@ public class Link implements Serializable {
 
     @Basic
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    private LocalDate ultimaColeta;
+    private  LocalDateTime ultimaColeta;
 
     @ManyToMany(
             mappedBy = "links",
@@ -72,11 +72,11 @@ public class Link implements Serializable {
         this.url = url;
     }
 
-    public LocalDate getUltimaColeta() {
+    public LocalDateTime getUltimaColeta() {
         return ultimaColeta;
     }
 
-    public void setUltimaColeta(LocalDate ultimaColeta) {
+    public void setUltimaColeta(LocalDateTime ultimaColeta) {
         this.ultimaColeta = ultimaColeta;
     }
 
