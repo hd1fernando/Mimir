@@ -44,14 +44,27 @@ public class AdminstradorAPI {
         return new ResponseEntity(new Message("erro", "Não foi possível inserir o usuário no banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // URL: http://localhost:8080/admin/deletar/{id}
-    @DeleteMapping(value = "/deletar/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    // URL: http://localhost:8080/admin/deletar/admin/{id}
+    @DeleteMapping(value = "/deletar/admin/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity removerAdministrador(@PathVariable(value = "id") Long id) {
         if (id != null && id <= 0) {
             return new ResponseEntity(new Message("erro", "os dados sobre o usuário não foram informado corretamente"), HttpStatus.BAD_REQUEST);
         }
 
         if (as.removerAdministrador(id)) {
+            return new ResponseEntity(new Message("sucesso", "usuário removido com sucesso"), HttpStatus.OK);
+        }
+        return new ResponseEntity(new Message("erro", "Não foi possível remover o usuário."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // URL: http://localhost:8080/admin/deletar/usuario/{id}
+    @DeleteMapping(value = "/deletar/usuario/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity removerUsuario(@PathVariable(value = "id") Long id) {
+        if (id != null && id <= 0) {
+            return new ResponseEntity(new Message("erro", "os dados sobre o usuário não foram informado corretamente"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (as.removerUsuario(id)) {
             return new ResponseEntity(new Message("sucesso", "usuário removido com sucesso"), HttpStatus.OK);
         }
         return new ResponseEntity(new Message("erro", "Não foi possível remover o usuário."), HttpStatus.INTERNAL_SERVER_ERROR);

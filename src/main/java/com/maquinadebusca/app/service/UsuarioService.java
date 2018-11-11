@@ -23,16 +23,6 @@ public class UsuarioService {
         return u;
     }
 
-    public Boolean removerUsuario(Usuario usuario) {
-        try {
-            ur.delete(usuario);
-            return true;
-        } catch (Exception ex) {
-            System.err.println("\n>> Não foi possível deletar o usuario informado no Banco de Dados\n");
-            ex.printStackTrace();
-        }
-        return false;
-    }
 
     public Boolean removerUsuario(long id) {
         try {
