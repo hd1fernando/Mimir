@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -42,6 +45,18 @@ public class Documento implements Serializable {
     @NotBlank
     private String visao;
 
+    private double frequenciaMaxima;
+
+    private double somaQuadradosPesos;
+
+    @OneToOne(
+            mappedBy = "documento", //Nome do atributo na classe IndiceInvertido.
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private List<IndiceInvertido> indiceInvertido;
+
     @ManyToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
@@ -62,6 +77,7 @@ public class Documento implements Serializable {
 
     public Documento() {
         links = new HashSet<>();
+        this.indiceInvertido = new LinkedList<>();
     }
 
     public Documento(String url, String texto, String visao) {
@@ -111,6 +127,38 @@ public class Documento implements Serializable {
         this.visao = visao;
     }
 
+    public double getFrequenciaMaxima() {
+        return frequenciaMaxima;
+    }
+
+    public void setFrequenciaMaxima(double frequenciaMaxima) {
+        this.frequenciaMaxima = frequenciaMaxima;
+    }
+
+    public double getSomaQuadradosPesos() {
+        return somaQuadradosPesos;
+    }
+
+    public void setSomaQuadradosPesos(double somaQuadradosPesos) {
+        this.somaQuadradosPesos = somaQuadradosPesos;
+    }
+
+    public List<IndiceInvertido> getIndiceInvertido() {
+        return indiceInvertido;
+    }
+
+    public void setIndiceInvertido(List<IndiceInvertido> indiceInvertido) {
+        this.indiceInvertido = indiceInvertido;
+    }
+
+    public Host getHost() {
+        return host;
+    }
+
+    public void setHost(Host host) {
+        this.host = host;
+    }
+
     public void addLink(Link link) {
         this.links.add(link);
     }
@@ -122,6 +170,31 @@ public class Documento implements Serializable {
     public void addHost(Host host) {
         host.setDocumento(this);
         this.host = host;
+    }
+
+    public void inserirTermo(Termo termo) {
+        // Cria uma nova entrada para o índice invertido com o termo informado como parâmetro e com o documento corrente.
+        IndiceInvertido entradaIndiceInvertido = new IndiceInvertido(termo, this);
+        // Insere a nova entrada no índice invertido do documento corrente.
+        this.indiceInvertido.add(entradaIndiceInvertido);
+        // Insere a nova entrada no índice invertido do termo que foi informado como parâmetro.
+        termo.getIndiceInvertido().add(entradaIndiceInvertido);
+    }
+
+    public void removeTermo(Termo termo) {
+        Iterator<IndiceInvertido> iterator = this.indiceInvertido.iterator();
+        while (iterator.hasNext()) {
+            IndiceInvertido entradaIndiceInvertido = iterator.next();
+            if (entradaIndiceInvertido.getTermo().equals(termo) && entradaIndiceInvertido.getDocumento().equals(this)) {
+                // Remoção no Banco de Dados a partir da tabela Documento.
+                iterator.remove();
+                // Remoção no Banco de Dados a partir da tabela Termo.
+                entradaIndiceInvertido.getTermo().getIndiceInvertido().remove(entradaIndiceInvertido);
+                // Remoção na memória RAM.
+                entradaIndiceInvertido.setDocumento(null);
+                entradaIndiceInvertido.setTermo(null);
+            }
+        }
     }
 
     @Override
