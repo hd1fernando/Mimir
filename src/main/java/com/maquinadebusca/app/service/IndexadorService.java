@@ -61,10 +61,12 @@ public class IndexadorService {
 
         if (this.hashTermos.containsKey(texto)) {
             termo = (Termo) this.hashTermos.get(texto);
+            termo.setN(termo.getN() + 1);
+
         } else {
             termo = new Termo();
             termo.setTexto(texto);
-            termo.setN(0L);
+            termo.setN(termo.getN() + 1);
             termo = tr.save(termo);
             this.hashTermos.put(texto, termo);
         }
@@ -108,7 +110,7 @@ public class IndexadorService {
         documento.setTexto("i think therefore i am do be do be do");
         documento.setVisao("i think therefore i am do be do be do");
         documentos.add(documento);
-        
+
         documento = new Documento();
         documento.setUrl("www.4.com.br");
         documento.setTexto("do do do da da da let it be let it be");

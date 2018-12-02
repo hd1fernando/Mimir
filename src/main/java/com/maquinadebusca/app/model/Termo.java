@@ -32,7 +32,7 @@ public class Termo implements Serializable {
     @NotBlank
     private String texto;
 
-    private Long n;
+    private Long n = 0L;
 
     @OneToMany(
             mappedBy = "termo", // Nome do atributo na classe IndiceInvertido. 
