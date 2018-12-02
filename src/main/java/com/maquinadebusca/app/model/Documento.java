@@ -19,43 +19,45 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@JsonIdentityInfo(
+@JsonIdentityInfo (
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
 public class Documento implements Serializable {
 
     static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    
+  @Id
+  @GeneratedValue (strategy = GenerationType.AUTO)
+  private Long id;
 
-    @NotBlank
-    private String url;
+  @NotBlank
+  private String url;
 
-    @Lob
-    @NotBlank
-    private String texto;
+  @Lob
+  @NotBlank
+  private String texto;
 
-    @Lob
-    @NotBlank
-    private String visao;
+  @Lob
+  @NotBlank
+  private String visao;
 
-    private double frequenciaMaxima;
+  private double frequenciaMaxima;
 
-    private double somaQuadradosPesos;
+  private double somaQuadradosPesos;
 
-    @OneToOne(
-            mappedBy = "documento", //Nome do atributo na classe IndiceInvertido.
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
-    private List<IndiceInvertido> indiceInvertido;
+  @OneToMany (
+          mappedBy = "documento", // Nome do atributo na classe IndiceInvertido.
+          cascade = CascadeType.ALL,
+          fetch = FetchType.LAZY,
+          orphanRemoval = true
+  )
+  private List<IndiceInvertido> indiceInvertido;
 
     @ManyToMany(
             cascade = CascadeType.ALL,
@@ -76,7 +78,7 @@ public class Documento implements Serializable {
     private Host host;
 
     public Documento() {
-        links = new HashSet<>();
+        //links = new HashSet<>();
         this.indiceInvertido = new LinkedList<>();
     }
 

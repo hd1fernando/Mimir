@@ -5,10 +5,10 @@ import com.maquinadebusca.app.model.Termo;
 import com.maquinadebusca.app.repository.IDocumentoRepository;
 import com.maquinadebusca.app.repository.ITermoRepository;
 import java.util.Hashtable;
+import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -35,14 +35,16 @@ public class IndexadorService {
             documento = dr.save(documento);
             this.indexar(documento);
         }
+
         return true;
     }
 
-    private void indexar(Documento documento) {
+    public void indexar(Documento documento) {
+        int i;
 
         String visaoDocumento = documento.getVisao();
         String[] termos = visaoDocumento.split(" ");
-        for (int i = 0; i < termos.length; i++) {
+        for (i = 0; i < termos.length; i++) {
             if (!termos[i].equals("")) {
                 Termo termo = this.getTermo(termos[i]);
                 int f = this.frequencia(termo, termos);
@@ -54,8 +56,9 @@ public class IndexadorService {
         }
     }
 
-    private Termo getTermo(String texto) {
+    public Termo getTermo(String texto) {
         Termo termo;
+
         if (this.hashTermos.containsKey(texto)) {
             termo = (Termo) this.hashTermos.get(texto);
         } else {
@@ -65,12 +68,14 @@ public class IndexadorService {
             termo = tr.save(termo);
             this.hashTermos.put(texto, termo);
         }
+
         return termo;
     }
 
-    private int frequencia(Termo termo, String[] termos) {
-        int contador = 0;
-        for (int i = 0; i < termos.length; i++) {
+    public int frequencia(Termo termo, String[] termos) {
+        int i, contador = 0;
+
+        for (i = 0; i < termos.length; i++) {
             if (termos[i] != "") {
                 if (termos[i].equalsIgnoreCase(termo.getTexto())) {
                     contador++;
@@ -78,12 +83,13 @@ public class IndexadorService {
                 }
             }
         }
+
         return contador;
     }
 
     public List<Documento> getDocumentos() {
         Documento documento;
-        List<Documento> documentos = new LinkedList<>();
+        List<Documento> documentos = new LinkedList();
 
         documento = new Documento();
         documento.setUrl("www.1.com.br");
@@ -102,6 +108,7 @@ public class IndexadorService {
         documento.setTexto("i think therefore i am do be do be do");
         documento.setVisao("i think therefore i am do be do be do");
         documentos.add(documento);
+        
         documento = new Documento();
         documento.setUrl("www.4.com.br");
         documento.setTexto("do do do da da da let it be let it be");
@@ -110,4 +117,5 @@ public class IndexadorService {
 
         return documentos;
     }
+
 }

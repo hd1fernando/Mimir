@@ -9,11 +9,12 @@ public interface IDocumentoRepository extends JpaRepository<Documento, Long> {
     List<String> findByUrl(String nome);
 
 //    Documento saveOrUpdate(Documento documento);
-    
     @Override
     List<Documento> findAll();
 
     Documento findById(long id);
-    
-    
+
+    @Override
+    Documento save(Documento documento);
+
 }

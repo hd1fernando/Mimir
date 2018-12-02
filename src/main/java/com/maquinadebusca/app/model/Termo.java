@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.maquinadebusca.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -28,7 +23,7 @@ import javax.validation.constraints.NotBlank;
 )
 public class Termo implements Serializable {
 
-    static long serialVersionUID = 1L;
+    static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +35,7 @@ public class Termo implements Serializable {
     private Long n;
 
     @OneToMany(
-            mappedBy = "termo", //esse é o nome do atributo na classe IndiceInvertivo
+            mappedBy = "termo", // Nome do atributo na classe IndiceInvertido. 
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true
@@ -48,7 +43,7 @@ public class Termo implements Serializable {
     private List<IndiceInvertido> indiceInvertido;
 
     public Termo() {
-        indiceInvertido = new LinkedList<>();
+        indiceInvertido = new LinkedList();
     }
 
     public Long getId() {
@@ -84,12 +79,9 @@ public class Termo implements Serializable {
     }
 
     public void inserirEntradaIndiceInvertido(Documento documento, int frequencia) {
-        // Cria uma nova entrada para o índice invertido com o termo corrente, o documento informado como parâmetro e a frequencia do termo no documento.
-        IndiceInvertido entradaIndiceInvertido = new IndiceInvertido(this, documento, frequencia);
-        // Insere a nova entrada no índice invertido do termo corrente.
-        this.indiceInvertido.add(entradaIndiceInvertido);
-        // Insere a nova entrada no índice invertido do documento que foi informado como parâmetro.
-        documento.getIndiceInvertido().add(entradaIndiceInvertido);
+        IndiceInvertido entradaIndiceInvertido = new IndiceInvertido(this, documento, frequencia); // Cria uma nova entrada para o índice invertido com o termo corrente, o documento informado como parâmetro e a frequencia do termo no documento.
+        this.indiceInvertido.add(entradaIndiceInvertido); // Insere a nova entrada no índice invertido do termo corrente.
+        documento.getIndiceInvertido().add(entradaIndiceInvertido); // Insere a nova entrada no índice invertido do documento que foi informado como parâmetro.
     }
 
     public void removeDocumento(Documento documento) {
@@ -97,12 +89,10 @@ public class Termo implements Serializable {
         while (iterator.hasNext()) {
             IndiceInvertido entradaIndiceInvertido = iterator.next();
             if (entradaIndiceInvertido.getTermo().equals(this) && entradaIndiceInvertido.getDocumento().equals(documento)) {
-                // Remoção no Banco de Dados a partir da tabela Termo.
-                iterator.remove();
-                // Remoção no Banco de Dados a partir da tabela Documento.
-                entradaIndiceInvertido.getDocumento().getIndiceInvertido().remove(entradaIndiceInvertido);
-                entradaIndiceInvertido.setDocumento(null);
-                entradaIndiceInvertido.setTermo(null);
+                iterator.remove(); // Remoção no Banco de Dados a partir da tabela Termo.
+                entradaIndiceInvertido.getDocumento().getIndiceInvertido().remove(entradaIndiceInvertido); // Remoção no Banco de Dados a partir da tabela Documento.
+                entradaIndiceInvertido.setDocumento(null); // Remoção na memória RAM.
+                entradaIndiceInvertido.setTermo(null); // Remoção na memória RAM.
             }
         }
     }
@@ -169,5 +159,4 @@ public class Termo implements Serializable {
         }
         return true;
     }
-
 }
