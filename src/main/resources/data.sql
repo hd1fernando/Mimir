@@ -1,11 +1,11 @@
-insert into documento (id, frequenciaMaxima, somaQuadradosPesos, texto, url, visao) values
+insert into documento (id, frequencia_maxima, soma_quadrados_pesos, texto, url, visao) values
 (1, 4, 25.6890245, "to do is to be to be is to do", "www.1.com.br", "to do is to be to be is to do"),
 (6, 2, 24, "to be or not to be i am what i am", "www.2.com.br", "to be or not to be i am what i am"),
 (12, 3, 14.1510208, "i think therefore i am do be do be do", "www.3.com.br", "i think therefore i am do be do be do"),
 (15, 3, 59.87914532, "do do do da da da let it be let it be", "www.4.com.br", "do do do da da da let it be let it be");
 
 
-insert into termodocumento (id, n, texto) values 
+insert into termo_documento (id, n, texto) values 
 (2, 2, "to"),
 (3, 3, "do"),
 (4, 1, "is"),
@@ -22,7 +22,7 @@ insert into termodocumento (id, n, texto) values
 (18, 1, "it");
 
 
-insert into indiceinvertido (frequencia, peso, documento_id, termo_id) values
+insert into indice_invertido (frequencia, peso, documento_id, termo_id) values
 (4, 3, 1, 2),                       -- (1, to)
 (2, 0.830074999, 1, 3),    -- (1, do)
 (2, 4, 1, 4),                       -- (1, is)
