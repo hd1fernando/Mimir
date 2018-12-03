@@ -22,6 +22,12 @@ public class IndexadorService {
     @Autowired
     ITermoDocumentoRepository tr;
 
+    @Autowired
+    DocumentoService ds;
+
+    @Autowired
+    TermoDocumentoService ts;
+
     public IndexadorService() {
         this.hashTermos = new Hashtable();
     }
@@ -35,7 +41,6 @@ public class IndexadorService {
             documento = dr.save(documento);
             this.indexar(documento);
         }
-        
 
         return true;
     }
@@ -82,6 +87,21 @@ public class IndexadorService {
         for (i = 0; i < termos.length; i++) {
             if (termos[i] != "") {
                 if (termos[i].equalsIgnoreCase(termo.getTexto())) {
+                    contador++;
+                    termos[i] = "";
+                }
+            }
+        }
+
+        return contador;
+    }
+
+    public int frequencia(String termo, String[] termos) {
+        int i, contador = 0;
+
+        for (i = 0; i < termos.length; i++) {
+            if (!termos[i].equals("")) {
+                if (termos[i].equalsIgnoreCase(termo)) {
                     contador++;
                     termos[i] = "";
                 }
