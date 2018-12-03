@@ -1,6 +1,7 @@
 package com.maquinadebusca.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Iterator;
@@ -21,7 +22,7 @@ import javax.validation.constraints.NotBlank;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
-public class Termo implements Serializable {
+public class TermoDocumento implements Serializable {
 
     static final long serialVersionUID = 1L;
 
@@ -34,6 +35,7 @@ public class Termo implements Serializable {
 
     private Long n = 0L;
 
+    @JsonIgnore // Essa anotação informa que o campo indiceInvertido da classe TermoDocumento não será apresentado no formato JSON.
     @OneToMany(
             mappedBy = "termo", // Nome do atributo na classe IndiceInvertido. 
             cascade = CascadeType.ALL,
@@ -42,7 +44,7 @@ public class Termo implements Serializable {
     )
     private List<IndiceInvertido> indiceInvertido;
 
-    public Termo() {
+    public TermoDocumento() {
         indiceInvertido = new LinkedList();
     }
 
@@ -89,7 +91,7 @@ public class Termo implements Serializable {
         while (iterator.hasNext()) {
             IndiceInvertido entradaIndiceInvertido = iterator.next();
             if (entradaIndiceInvertido.getTermo().equals(this) && entradaIndiceInvertido.getDocumento().equals(documento)) {
-                iterator.remove(); // Remoção no Banco de Dados a partir da tabela Termo.
+                iterator.remove(); // Remoção no Banco de Dados a partir da tabela TermoDocumento.
                 entradaIndiceInvertido.getDocumento().getIndiceInvertido().remove(entradaIndiceInvertido); // Remoção no Banco de Dados a partir da tabela Documento.
                 entradaIndiceInvertido.setDocumento(null); // Remoção na memória RAM.
                 entradaIndiceInvertido.setTermo(null); // Remoção na memória RAM.
@@ -107,7 +109,7 @@ public class Termo implements Serializable {
             }
         }
     }
-
+/*
     public void setFrequenciaNormalizada(Documento documento) {
         Iterator<IndiceInvertido> iterator = this.indiceInvertido.iterator();
         while (iterator.hasNext()) {
@@ -118,7 +120,7 @@ public class Termo implements Serializable {
             }
         }
     }
-
+*/
     public void setPeso(double peso, Documento documento) {
         Iterator<IndiceInvertido> iterator = this.indiceInvertido.iterator();
         while (iterator.hasNext()) {
@@ -139,8 +141,7 @@ public class Termo implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj
-    ) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -150,7 +151,7 @@ public class Termo implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Termo other = (Termo) obj;
+        final TermoDocumento other = (TermoDocumento) obj;
         if (!Objects.equals(this.texto, other.texto)) {
             return false;
         }

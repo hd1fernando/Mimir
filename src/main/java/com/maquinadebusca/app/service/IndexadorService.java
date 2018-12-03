@@ -1,15 +1,15 @@
 package com.maquinadebusca.app.service;
 
 import com.maquinadebusca.app.model.Documento;
-import com.maquinadebusca.app.model.Termo;
+import com.maquinadebusca.app.model.TermoDocumento;
 import com.maquinadebusca.app.repository.IDocumentoRepository;
-import com.maquinadebusca.app.repository.ITermoRepository;
 import java.util.Hashtable;
 import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import com.maquinadebusca.app.repository.ITermoDocumentoRepository;
 
 @Service
 public class IndexadorService {
@@ -20,7 +20,7 @@ public class IndexadorService {
     IDocumentoRepository dr;
 
     @Autowired
-    ITermoRepository tr;
+    ITermoDocumentoRepository tr;
 
     public IndexadorService() {
         this.hashTermos = new Hashtable();
@@ -35,6 +35,7 @@ public class IndexadorService {
             documento = dr.save(documento);
             this.indexar(documento);
         }
+        
 
         return true;
     }
@@ -46,25 +47,26 @@ public class IndexadorService {
         String[] termos = visaoDocumento.split(" ");
         for (i = 0; i < termos.length; i++) {
             if (!termos[i].equals("")) {
-                Termo termo = this.getTermo(termos[i]);
+                TermoDocumento termo = this.getTermo(termos[i]);
                 int f = this.frequencia(termo, termos);
                 if (f > documento.getFrequenciaMaxima()) {
                     documento.setFrequenciaMaxima(f);
                 }
                 termo.inserirEntradaIndiceInvertido(documento, f);
+                //termo.setFrequenciaNormalizada(documento);
             }
         }
     }
 
-    public Termo getTermo(String texto) {
-        Termo termo;
+    public TermoDocumento getTermo(String texto) {
+        TermoDocumento termo;
 
         if (this.hashTermos.containsKey(texto)) {
-            termo = (Termo) this.hashTermos.get(texto);
+            termo = (TermoDocumento) this.hashTermos.get(texto);
             termo.setN(termo.getN() + 1);
 
         } else {
-            termo = new Termo();
+            termo = new TermoDocumento();
             termo.setTexto(texto);
             termo.setN(termo.getN() + 1);
             termo = tr.save(termo);
@@ -74,7 +76,7 @@ public class IndexadorService {
         return termo;
     }
 
-    public int frequencia(Termo termo, String[] termos) {
+    public int frequencia(TermoDocumento termo, String[] termos) {
         int i, contador = 0;
 
         for (i = 0; i < termos.length; i++) {

@@ -174,7 +174,7 @@ public class Documento implements Serializable {
         this.host = host;
     }
 
-    public void inserirTermo(Termo termo) {
+    public void inserirTermo(TermoDocumento termo) {
         // Cria uma nova entrada para o índice invertido com o termo informado como parâmetro e com o documento corrente.
         IndiceInvertido entradaIndiceInvertido = new IndiceInvertido(termo, this);
         // Insere a nova entrada no índice invertido do documento corrente.
@@ -183,14 +183,14 @@ public class Documento implements Serializable {
         termo.getIndiceInvertido().add(entradaIndiceInvertido);
     }
 
-    public void removeTermo(Termo termo) {
+    public void removeTermo(TermoDocumento termo) {
         Iterator<IndiceInvertido> iterator = this.indiceInvertido.iterator();
         while (iterator.hasNext()) {
             IndiceInvertido entradaIndiceInvertido = iterator.next();
             if (entradaIndiceInvertido.getTermo().equals(termo) && entradaIndiceInvertido.getDocumento().equals(this)) {
                 // Remoção no Banco de Dados a partir da tabela Documento.
                 iterator.remove();
-                // Remoção no Banco de Dados a partir da tabela Termo.
+                // Remoção no Banco de Dados a partir da tabela TermoDocumento.
                 entradaIndiceInvertido.getTermo().getIndiceInvertido().remove(entradaIndiceInvertido);
                 // Remoção na memória RAM.
                 entradaIndiceInvertido.setDocumento(null);
