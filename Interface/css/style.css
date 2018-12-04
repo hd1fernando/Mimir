@@ -1,0 +1,110 @@
+.panel h2{ color:#444444; font-size:18px; margin:0 0 8px 0;}
+.panel p { color:#777777; font-size:14px; margin-bottom:30px; line-height:24px;}
+.panel {text-align: center;}
+
+
+.login-form .form-control {
+    background: #f7f7f7 none repeat scroll 0 0;
+    border: 1px solid #d4d4d4;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+}
+.main-div {
+
+    border: 1px solid;
+    background: #ffffff none repeat scroll 0 0;
+    border-radius: 10px;
+    margin: 0 auto 0 auto;
+    box-shadow: 1px 1px 3.5px 1px gray;
+    padding: 20px;
+}
+
+.login-form .form-group {
+    margin-bottom:10px;
+}
+
+.forgot a {
+    color: #777777;
+    font-size: 14px;
+    text-decoration: underline;
+}
+.login-form{
+    border-color: #f0ad4e;
+    color: #ffffff;
+    font-size: 14px;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: 0;
+}
+.forgot {
+    text-align: left; margin-bottom:30px;
+}
+
+#login{
+    text-align: center;
+}
+.createAndLogin{
+    width: 100%;
+    display: flex;
+}
+.createAccount, .buttonLogin{
+    width: 50%;
+}
+.buttonLogin{
+    text-align: right;
+}
+
+/**** registar ****/
+.buttonCadastrar {
+    text-align: center;
+}
+
+/***** Default *****/
+.searchDefaut{
+    margin: 25% auto auto auto;
+    box-shadow: 1px 1px 3.5px 1px gray;
+    padding: 20px;
+}
+
+.buttonPesquisar{
+    align-items: center;
+    display: flex;
+    text-align: center;
+    margin: 5% auto 0 auto;
+    
+}
+
+/***** Admin ******/
+
+.abaAdmin{
+    padding-top:  10px;
+}
+.abaAdmin li{
+    padding: 3px 3px 3px 3px; 
+}
+
+.tab-content{
+    padding: 50px 0 0 0;
+}
+
+.tab-pane .buttonCadastrar{
+    padding: 20px 0 20px 0;
+}
+.tableUserDiv{
+    
+    display: block;
+    max-height: 300px;
+    overflow-y: auto;
+    float: left;
+}
+
+.registerTelaAdmin{
+    display: inline-block;
+}
+
+tbody tr:hover{
+    background-color: red;
+ }
