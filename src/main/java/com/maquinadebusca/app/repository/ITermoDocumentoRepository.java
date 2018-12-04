@@ -20,5 +20,7 @@ public interface ITermoDocumentoRepository extends JpaRepository<TermoDocumento,
             + "from termo_documento t, documento d "
             + "where t.texto =:termo", nativeQuery = true)
     public double getIdf(@Param("termo") String termo);
+    
+    
 
 }

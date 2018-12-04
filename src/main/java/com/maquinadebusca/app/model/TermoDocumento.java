@@ -109,7 +109,7 @@ public class TermoDocumento implements Serializable {
             }
         }
     }
-
+/*
     public void setFrequenciaNormalizada(Documento documento) {
         Iterator<IndiceInvertido> iterator = this.indiceInvertido.iterator();
         while (iterator.hasNext()) {
@@ -119,7 +119,7 @@ public class TermoDocumento implements Serializable {
                 break;
             }
         }
-    }
+    }*/
 
     public void setPeso(double peso, Documento documento) {
         Iterator<IndiceInvertido> iterator = this.indiceInvertido.iterator();

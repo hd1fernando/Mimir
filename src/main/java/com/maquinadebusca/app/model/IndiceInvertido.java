@@ -24,7 +24,7 @@ public class IndiceInvertido implements Serializable {
 
     private int frequencia;
 
-    private double frequenciaNormalizada;
+    //private double frequenciaNormalizada;
     private double peso;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -67,13 +67,14 @@ public class IndiceInvertido implements Serializable {
         this.frequencia = frequencia;
     }
 
+    /*
     public double getFrequenciaNormalizada() {
         return frequenciaNormalizada;
     }
 
     public void setFrequenciaNormalizada(double frequenciaNormalizada) {
         this.frequenciaNormalizada = frequenciaNormalizada;
-    }
+    }*/
 
     public double getPeso() {
         return peso;

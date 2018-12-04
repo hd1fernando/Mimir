@@ -58,7 +58,6 @@ public class IndexadorService {
                     documento.setFrequenciaMaxima(f);
                 }
                 termo.inserirEntradaIndiceInvertido(documento, f);
-                termo.setFrequenciaNormalizada(documento);
             }
         }
     }

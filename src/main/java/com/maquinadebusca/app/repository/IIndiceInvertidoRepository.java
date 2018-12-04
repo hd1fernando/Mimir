@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 public interface IIndiceInvertidoRepository extends JpaRepository<IndiceInvertido, IdIndiceInvertido> {
 
     @Query(value = "select  i.* "
-            + "from TermoDocumento t, IndiceInvertido i, Documento d "
+            + "from termo_documento t, indice_invertido i, documento d "
             + "where t.id = i.termo_id and "
             + "          i.documento_id = d.id and "
             + "          t.texto = :termoConsulta ", nativeQuery = true)
