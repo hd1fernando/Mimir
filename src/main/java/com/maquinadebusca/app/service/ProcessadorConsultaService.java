@@ -15,78 +15,97 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class ProcessadorConsultaService {
 
-  @Autowired
-  TermoDocumentoService ts;
+    @Autowired
+    TermoDocumentoService ts;
 
-  @Autowired
-  DocumentoService ds;
+    @Autowired
+    DocumentoService ds;
 
-  @Autowired
-  IndiceInvertidoService iis;
+    @Autowired
+    IndiceInvertidoService iis;
 
-  @Autowired
-  IndexadorService is;
+    @Autowired
+    IndexadorService is;
 
-  private Map<String, EntradaRanking> mergeListasInvertidas = new Hashtable ();
+    private Map<String, EntradaRanking> mergeListasInvertidas = new Hashtable();
 
-  public ProcessadorConsultaService () {
-  }
-
-  public Consulta processarConsulta (String textoConsulta) {
-    Consulta consulta = new Consulta (textoConsulta);
-    this.iniciarTermosConsulta (consulta);
-    this.processarListasInvertidas (consulta);
-    this.computarSimilaridade ();
-    consulta.setRanking (this.getRanking ());
-    return consulta;
-  }
-
-  public void iniciarTermosConsulta (Consulta consulta) {
-    String visaoConsulta = consulta.getVisao ();
-    String[] termos = visaoConsulta.split (" ");
-    for (String termo : termos) {
-      if (!termo.equals ("")) {
-        int f = is.frequencia (termo, termos);
-        double idf = ts.getIdf (termo);
-        TermoConsulta termoConsulta = new TermoConsulta (termo, f, idf);
-        consulta.adicionarTermoConsulta (termoConsulta);
-      }
+    public ProcessadorConsultaService() {
     }
-  }
 
-  public void processarListasInvertidas (Consulta consulta) {
-    List<TermoConsulta> termosConsulta = consulta.getTermosConsulta ();
-    for (TermoConsulta termoConsulta : termosConsulta) {
-      List<IndiceInvertido> entradasIndiceInvertido = iis.getEntradasIndiceInvertido (termoConsulta.getTexto ());
-      for (IndiceInvertido entradaIndiceInvertido : entradasIndiceInvertido) {
-        if (this.mergeListasInvertidas.containsKey (entradaIndiceInvertido.getDocumento ().getUrl ())) {
-          EntradaRanking entradaRanking = this.mergeListasInvertidas.get (entradaIndiceInvertido.getDocumento ().getUrl ());
-          entradaRanking.adicionarProdutoPesos (termoConsulta.getPeso () * entradaIndiceInvertido.getPeso ());
-        } else {
-          EntradaRanking entradaRanking = new EntradaRanking ();
-          entradaRanking.setUrl (entradaIndiceInvertido.getDocumento ().getUrl ());
-          entradaRanking.adicionarProdutoPesos (termoConsulta.getPeso () * entradaIndiceInvertido.getPeso ());
-          entradaRanking.setSomaQuadradosPesosDocumento (entradaIndiceInvertido.getDocumento ().getSomaQuadradosPesos ());
-          entradaRanking.setSomaQuadradosPesosConsulta (consulta.getSomaQuadradosPesos ());
-          this.mergeListasInvertidas.put (entradaIndiceInvertido.getDocumento ().getUrl (), entradaRanking);
+    public Consulta processarConsulta(String textoConsulta) {
+        Consulta consulta = new Consulta(textoConsulta);
+        this.iniciarTermosConsulta(consulta);
+        this.processarListasInvertidas(consulta);
+        this.computarSimilaridade();
+        consulta.setRanking(this.getRanking());
+        return consulta;
+    }
+
+    public void iniciarTermosConsulta(Consulta consulta) {
+        String visaoConsulta = consulta.getVisao();
+        String[] termos = visaoConsulta.split(" ");
+        for (String termo : termos) {
+            if (!termo.equals("")) {
+                int f = is.frequencia(termo, termos);
+                double idf = ts.getIdf(termo);
+                TermoConsulta termoConsulta = new TermoConsulta(termo, f, idf);
+                consulta.adicionarTermoConsulta(termoConsulta);
+            }
         }
-      }
     }
-  }
 
-  public void computarSimilaridade () {
-    Collection<EntradaRanking> ranking = this.mergeListasInvertidas.values ();
-    for (EntradaRanking entradaRanking : ranking) {
-      entradaRanking.computarSimilaridade ();
+    public void processarListasInvertidas(Consulta consulta) {
+        List<TermoConsulta> termosConsulta = consulta.getTermosConsulta();
+        for (TermoConsulta termoConsulta : termosConsulta) {
+            List<IndiceInvertido> entradasIndiceInvertido = iis.getEntradasIndiceInvertido(termoConsulta.getTexto());
+            for (IndiceInvertido entradaIndiceInvertido : entradasIndiceInvertido) {
+                if (this.mergeListasInvertidas.containsKey(entradaIndiceInvertido.getDocumento().getUrl())) {
+                    EntradaRanking entradaRanking = this.mergeListasInvertidas.get(entradaIndiceInvertido.getDocumento().getUrl());
+                    entradaRanking.adicionarProdutoPesos(termoConsulta.getPeso() * entradaIndiceInvertido.getPeso());
+                } else {
+                    EntradaRanking entradaRanking = new EntradaRanking();
+                    entradaRanking.setUrl(entradaIndiceInvertido.getDocumento().getUrl());
+                    entradaRanking.adicionarProdutoPesos(termoConsulta.getPeso() * entradaIndiceInvertido.getPeso());
+                    entradaRanking.setSomaQuadradosPesosDocumento(entradaIndiceInvertido.getDocumento().getSomaQuadradosPesos());
+                    entradaRanking.setSomaQuadradosPesosConsulta(consulta.getSomaQuadradosPesos());
+                    this.mergeListasInvertidas.put(entradaIndiceInvertido.getDocumento().getUrl(), entradaRanking);
+                }
+            }
+        }
     }
-  }
 
-  public List<EntradaRanking> getRanking () {
-    List<EntradaRanking> resp = new LinkedList ();
-    Collection<EntradaRanking> ranking = this.mergeListasInvertidas.values ();
-    for (EntradaRanking entradaRanking : ranking) {
-      resp.add (entradaRanking);
+    public void computarSimilaridade() {
+        Collection<EntradaRanking> ranking = this.mergeListasInvertidas.values();
+        for (EntradaRanking entradaRanking : ranking) {
+            entradaRanking.computarSimilaridade();
+        }
     }
-    return resp;
-  }
+
+    public List<EntradaRanking> getRanking() {
+        List<EntradaRanking> resp = new LinkedList();
+        Collection<EntradaRanking> ranking = this.mergeListasInvertidas.values();
+        double maxSimilaridade = 0;
+        for (EntradaRanking entradaRanking : ranking) {
+            resp.add(entradaRanking);
+        }
+        return this.ordenacao(resp);
+    }
+
+    public List<EntradaRanking> ordenacao(List<EntradaRanking> list) {
+        double sim = list.get(0).getSimilaridade();
+        EntradaRanking aux;
+        List<EntradaRanking> newList = list;
+        for (int i = 0; i < newList.size(); i++) {
+            for (int j = 0; j < newList.size() - 1; j++) {
+                if (newList.get(i).getSimilaridade() > newList.get(j + 1).getSimilaridade()) {
+                    aux = newList.get(j);
+                    newList.add(j, newList.get(1 + j));
+                    newList.add(j + 1, aux);
+                }else{
+                    newList.add(i, newList.get(i));
+                }
+            }
+        }
+        return newList;
+    }
 }
